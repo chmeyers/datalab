@@ -1,3 +1,5 @@
+import { fixture } from "./test-utils";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

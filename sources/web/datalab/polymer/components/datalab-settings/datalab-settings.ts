@@ -1,3 +1,6 @@
+import { SettingsManager } from "../../modules/settings-manager/settings-manager";
+import { Utils } from "../../modules/utils/utils";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

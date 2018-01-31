@@ -12,13 +12,18 @@
  * the License.
  */
 
+import { BaseDialogElement, BaseDialogCloseResult } from '../base-dialog/base-dialog';
+import { Utils } from '../../modules/utils/utils';
+import { GapiManager } from '../../modules/gapi-manager/gapi-manager';
+import { ItemListElement, ColumnTypeName, ItemListRow } from '../item-list/item-list';
+
 /// <reference path="../../modules/gapi-manager/gapi-manager.ts" />
 
 /**
  * Dialog close context, includes whether the dialog was confirmed, and the
  * user selected project.
  */
-interface ProjectPickerDialogCloseResult extends BaseDialogCloseResult {
+export interface ProjectPickerDialogCloseResult extends BaseDialogCloseResult {
   projectId: string;
   projectName: string;
 }
@@ -29,7 +34,7 @@ interface ProjectPickerDialogCloseResult extends BaseDialogCloseResult {
  * TODO: Consider remembering the last few selected projects and showing those
  * first.
  */
-class ProjectPickerDialogElement extends BaseDialogElement {
+export class ProjectPickerDialogElement extends BaseDialogElement {
 
   private static _memoizedTemplate: PolymerTemplate;
 
@@ -94,17 +99,17 @@ class ProjectPickerDialogElement extends BaseDialogElement {
     this.$.theDialog.notifyResize();
 
     itemlist.addEventListener('itemDoubleClick',
-                                  this._handleDoubleClicked.bind(this));
+      this._handleDoubleClicked.bind(this));
     itemlist.addEventListener('selected-indices-changed',
-                                  this._handleSelectionChanged.bind(this));
+      this._handleSelectionChanged.bind(this));
   }
 
   _projectsToListItems(projects: gapi.client.cloudresourcemanager.Project[])
-      : ItemListRow[] {
+    : ItemListRow[] {
     return projects.map((project) => new ItemListRow({
-        columns: [project.projectId || '', parseInt(project.projectNumber || '0', 10)],
-        icon: 'datalab-icons:bq-project',
-      }));
+      columns: [project.projectId || '', parseInt(project.projectNumber || '0', 10)],
+      icon: 'datalab-icons:bq-project',
+    }));
   }
 
   /**

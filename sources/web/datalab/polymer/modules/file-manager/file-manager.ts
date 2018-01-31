@@ -20,10 +20,14 @@
 
 /// <reference path="../../../common.d.ts" />
 
+import { FileManagerFactory, FileManagerType } from '../file-manager-factory/file-manager-factory';
+import { Utils, UnsupportedMethod } from '../utils/utils';
+import { ColumnType, Column, ColumnTypeName } from '../../components/item-list/item-list';
+
 /**
  * Represents a cell in a notebook.
  */
-interface NotebookCell {
+export interface NotebookCell {
   cell_type: string;
   execution_count: number;
   metadata: object;
@@ -31,7 +35,7 @@ interface NotebookCell {
   source: string;
 }
 
-enum DatalabFileType {
+export enum DatalabFileType {
   DIRECTORY,
   FILE,
   NOTEBOOK,
@@ -40,7 +44,7 @@ enum DatalabFileType {
 /**
  * Unique identifier for a file object.
  */
-class DatalabFileId {
+export class DatalabFileId {
   private static _delim = '/';
 
   path: string;
@@ -59,16 +63,16 @@ class DatalabFileId {
     }
     const source = tokens.shift() as string;
     return new DatalabFileId(tokens.join(this._delim),
-        FileManagerFactory.fileManagerNameToType(source));
+      FileManagerFactory.fileManagerNameToType(source));
   }
 
   public toString() {
     return FileManagerFactory.fileManagerTypetoString(this.source) +
-        DatalabFileId._delim + this.path;
+      DatalabFileId._delim + this.path;
   }
 }
 
-class NotebookContent {
+export class NotebookContent {
   public static EMPTY_NOTEBOOK_CONTENT = `{
     "cells": [
     ],
@@ -103,7 +107,7 @@ class NotebookContent {
 /**
  * Represents a file object that can be displayed in the file browser.
  */
-abstract class DatalabFile {
+export abstract class DatalabFile {
   icon: string;
   id: DatalabFileId;
   name: string;
@@ -132,7 +136,7 @@ abstract class DatalabFile {
   }
 }
 
-interface FileManager {
+export interface FileManager {
   // TODO: Consider supporting getting both the file and content objects with
   // one call.
 
@@ -190,7 +194,7 @@ interface FileManager {
    * @param name name for the created item. Default is 'New item'.
    */
   create(fileType: DatalabFileType, containerId?: DatalabFileId, name?: string):
-      Promise<DatalabFile>;
+    Promise<DatalabFile>;
 
   /**
    * Renames an item
@@ -199,7 +203,7 @@ interface FileManager {
    * @param newContainerId id of the destination path of the renamed item
    */
   rename(oldFileId: DatalabFileId, newName: string, newContainerId?: DatalabFileId):
-      Promise<DatalabFile>;
+    Promise<DatalabFile>;
 
   /**
    * Deletes an item
@@ -237,7 +241,7 @@ interface FileManager {
  * Base implementation of the FileManager interface that contains common
  * functionality for the different FileManager classes.
  */
-class BaseFileManager implements FileManager {
+export class BaseFileManager implements FileManager {
   get(_fileId: DatalabFileId): Promise<DatalabFile> {
     throw new UnsupportedMethod('get', this);
   }
@@ -270,12 +274,12 @@ class BaseFileManager implements FileManager {
   }
 
   create(_fileType: DatalabFileType, _containerId?: DatalabFileId, _name?: string):
-      Promise<DatalabFile> {
+    Promise<DatalabFile> {
     throw new UnsupportedMethod('create', this);
   }
 
   rename(_oldFileId: DatalabFileId, _newName: string, _newContainerId?: DatalabFileId):
-      Promise<DatalabFile> {
+    Promise<DatalabFile> {
     throw new UnsupportedMethod('rename', this);
   }
 

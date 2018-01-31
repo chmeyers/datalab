@@ -1,3 +1,6 @@
+import { GapiManager } from "../../modules/gapi-manager/gapi-manager";
+import { Utils } from "../../modules/utils/utils";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

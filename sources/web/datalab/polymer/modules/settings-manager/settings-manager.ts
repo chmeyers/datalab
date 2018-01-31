@@ -1,3 +1,5 @@
+import { XhrOptions, ApiManager, ServiceId } from "../api-manager/api-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -25,7 +27,7 @@ class MissingConfigUrlError extends Error {
  * Handles API calls related to app/user settings, and manages a local cached copy
  * of the settings to avoid duplicate API calls.
  */
-class SettingsManager {
+export class SettingsManager {
 
   /**
    * Returns the user settings object, optionally after refreshing it from the backend

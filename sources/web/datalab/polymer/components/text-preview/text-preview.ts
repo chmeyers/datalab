@@ -1,3 +1,7 @@
+import { DatalabFile } from "../../modules/file-manager/file-manager";
+import { FileManagerFactory } from "../../modules/file-manager-factory/file-manager-factory";
+import { Utils } from "../../modules/utils/utils";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

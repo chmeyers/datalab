@@ -12,6 +12,10 @@
  * the License.
  */
 
+import { GapiManager } from '../modules/gapi-manager/gapi-manager';
+import { TablePreviewElement } from '../components/table-preview/table-preview';
+import { fixture } from './test-utils';
+
 /*
  * For all Polymer component testing, be sure to call Polymer's flush() after
  * any code that will cause shadow dom redistribution, such as observed array
@@ -60,13 +64,13 @@ describe('<table-preview>', () => {
   beforeEach(() => {
     GapiManager.bigquery.getTableDetails = (pid, did, tid) => {
       assert(!!pid && !!did && !!tid,
-          'getTableDetails should be called with project, dataset, and table');
+        'getTableDetails should be called with project, dataset, and table');
 
       const response = {
         result: mockTable,
       };
       return Promise.resolve(response) as
-          Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.Table>>;
+        Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.Table>>;
     };
 
     testFixture = fixture('table-preview-fixture');
@@ -79,34 +83,34 @@ describe('<table-preview>', () => {
       Polymer.dom.flush();
 
       assert(JSON.stringify((testFixture as any)._table) === JSON.stringify(mockTable),
-          'element should have fetched table info');
+        'element should have fetched table info');
 
       assert(testFixture.$.tableId.innerText === mockTable.tableReference.tableId,
-            'table id should be parsed');
+        'table id should be parsed');
       assert(testFixture.$.projectId.innerText === mockTable.tableReference.projectId,
-            'project id should be parsed');
+        'project id should be parsed');
       assert(testFixture.$.datasetId.innerText === mockTable.tableReference.datasetId,
-            'dataset id should be parsed');
+        'dataset id should be parsed');
       assert(testFixture.$.tableSize.innerText === '1023.00 KB', 'should see readable table size');
       assert(testFixture.$.longTermTableSize.innerText === '50.00 MB',
-          'should see readable long term table size');
+        'should see readable long term table size');
       assert(testFixture.$.numRows.innerText === '1,234,567,890',
-          'should see comma-separated number of rows');
+        'should see comma-separated number of rows');
       assert(testFixture.$.creationTime.innerText === 'Mon, 31 Jul 2017 22:47:51 GMT',
-          'should parse timestamp into readable text');
+        'should parse timestamp into readable text');
       assert(testFixture.$.lastModifiedTime.innerText === 'Tue, 01 Aug 2017 17:19:54 GMT',
-          'should parse timestamp into readable text');
+        'should parse timestamp into readable text');
       assert(testFixture.$.location.innerText === mockTable.location, 'should see location');
 
       assert(testFixture.$.schema.rows.length === mockTable.schema.fields.length,
-          'unexpected number of schema rows');
+        'unexpected number of schema rows');
 
       const rows = testFixture.$.schema.rows;
       mockTable.schema.fields.forEach((field, i) => {
         assert(rows[i].children[0].innerText === field.name, 'field name not matching');
         assert(rows[i].children[1].innerText === field.type, 'field type not matching');
         assert(rows[i].children[2].innerText === (field.mode || 'NULLABLE'),
-            'field mode not matching');
+          'field mode not matching');
       });
 
       done();
@@ -141,9 +145,9 @@ describe('<table-preview>', () => {
 
       if (f2.fields) { // For transpiler to rule out undefined
         assert(rows[2].children[0].innerText === f2.name + '.' + f2.fields[0].name,
-            'nested field name should contain parent and nested field names');
+          'nested field name should contain parent and nested field names');
         assert(rows[2].children[1].innerText === f2.fields[0].type,
-            'nested field type not matching');
+          'nested field type not matching');
       }
 
       done();

@@ -11,7 +11,8 @@
     "prebuild": "npm install && bower --allow-root install",
     "build": "npm run transpile && polymer build",
     "test": "tsc && polymer test",
-    "watch": "webpack -w"
+    "watch": "webpack -w",
+    "dev": "webpack"
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",

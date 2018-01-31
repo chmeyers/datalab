@@ -1,3 +1,5 @@
+import { ApiManager, ServiceId, XhrOptions } from "../api-manager/api-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -15,7 +17,7 @@
 /**
  * Handles API calls related to idle timeout.
  */
-class TimeoutManager {
+export default class TimeoutManager {
 
   private static _hoursPerDay = 24;
   private static _minutesPerHour = 60;

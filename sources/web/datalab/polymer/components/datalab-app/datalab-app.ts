@@ -1,3 +1,6 @@
+import { ApiManager } from "../../modules/api-manager/api-manager";
+import { SettingsManager } from "../../modules/settings-manager/settings-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

@@ -17,6 +17,12 @@
  * as documented at developer.github.com/v3.
  */
 
+import {DatalabFile, DatalabFileId, BaseFileManager, DatalabFileType}
+    from '../file-manager/file-manager';
+import {FileManagerType} from '../file-manager-factory/file-manager-factory';
+import {Utils, UnsupportedMethod} from '../utils/utils';
+import { XhrOptions, ApiManager } from '../api-manager/api-manager';
+
 // TODO(jimmc): Need to deal with the following
 // paged results (default page size is 30, can request up to 100)
 // error conditions
@@ -55,7 +61,7 @@ interface GhFileResponse {
   git_url: string;  // the url to access this file via the Blob api
 }
 
-interface GithubCacheEntry {
+export interface GithubCacheEntry {
   data?: object;   // The payload
   etag?: string;   // The value of the etag header in the github response
   promise?: Promise<object>;  // The fetch promise if we don't yet have the data
@@ -64,7 +70,7 @@ interface GithubCacheEntry {
 /**
  * A cache that holds github responses.
  */
-class GithubCache {
+export class GithubCache {
 
   cache_: {[key: string]: GithubCacheEntry} = {};
 
@@ -88,7 +94,7 @@ class GithubCache {
  * A file manager that wraps the Github API so that we can browse github
  * repositories.
  */
-class GithubFileManager extends BaseFileManager {
+export class GithubFileManager extends BaseFileManager {
 
   private static cache_ = new GithubCache();
 

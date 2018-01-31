@@ -21,9 +21,18 @@
 /// <reference path="../node_modules/@types/chai/index.d.ts" />
 /// <reference path="../node_modules/@types/sinon/index.d.ts" />
 
-declare function fixture(element: string): any;
+import { DatalabFile, DatalabFileId, DatalabFileType, BaseFileManager }
+  from '../modules/file-manager/file-manager';
+import { FileManagerType } from '../modules/file-manager-factory/file-manager-factory';
+import { Utils } from '../modules/utils/utils';
+import { BaseDialogElement } from '../components/base-dialog/base-dialog';
+import { ColumnTypeName } from '../components/item-list/item-list';
 
-class MockFile extends DatalabFile {
+export declare function fixture(element: string): any;
+
+export type HttpResponse<T> = gapi.client.HttpRequestFulfilled<T>;
+
+export class MockFile extends DatalabFile {
   constructor(name = '', path = '', type = DatalabFileType.DIRECTORY) {
     super(
       new DatalabFileId(path, FileManagerType.MOCK),
@@ -36,15 +45,15 @@ class MockFile extends DatalabFile {
   }
 }
 
-class MockFileManager extends BaseFileManager {
+export class MockFileManager extends BaseFileManager {
   public getColumns() {
     return [{
-        name: Utils.constants.columns.name,
-        type: ColumnTypeName.STRING,
-      }, {
-        name: 'Type',
-        type: ColumnTypeName.STRING,
-      }];
+      name: Utils.constants.columns.name,
+      type: ColumnTypeName.STRING,
+    }, {
+      name: 'Type',
+      type: ColumnTypeName.STRING,
+    }];
   }
   public async getRootFile() {
     return new MockFile('root');
@@ -54,7 +63,7 @@ class MockFileManager extends BaseFileManager {
   }
 }
 
-class TestUtils {
+export class TestUtils {
   /**
    * Returns the currently open dialog object, and asserts that there is exactly
    * one dialog open.

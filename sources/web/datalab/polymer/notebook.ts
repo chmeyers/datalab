@@ -1,3 +1,13 @@
+import { ApiManager } from "./modules/api-manager/api-manager";
+import { DatalabFileId, DatalabFileType } from "./modules/file-manager/file-manager";
+import { FileManagerFactory } from "./modules/file-manager-factory/file-manager-factory";
+import { BaseDialogOptions } from "./components/base-dialog/base-dialog";
+import { Utils } from "./modules/utils/utils";
+import { ProjectPickerDialogElement, ProjectPickerDialogCloseResult } from "./components/project-picker-dialog/project-picker-dialog";
+import { DriveFileManager } from "./modules/drive-file-manager/drive-file-manager";
+import { GapiManager } from "./modules/gapi-manager/gapi-manager";
+import { TemplateManager } from "./modules/template-manager/template-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

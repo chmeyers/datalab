@@ -12,7 +12,11 @@
  * the License.
  */
 
-/// <reference path="../item-list/item-list.ts" />
+import { DatalabFileId } from '../../modules/file-manager/file-manager';
+import { FileManagerFactory, FileManagerType }
+  from '../../modules/file-manager-factory/file-manager-factory';
+import { ItemListElement, ColumnTypeName, ItemListRow } from '../item-list/item-list';
+import {SessionManager, Session } from '../../modules/session-manager/session-manager';
 
 interface SessionDescription {
   icon: string;
@@ -76,7 +80,7 @@ class SessionsElement extends Polymer.Element implements DatalabPageElement {
     const sessionsElement = this.shadowRoot.querySelector('#sessions');
     if (sessionsElement) {
       sessionsElement.addEventListener('selected-indices-changed',
-                                    this._handleSelectionChanged.bind(this));
+        this._handleSelectionChanged.bind(this));
     }
 
     this.focusHandler();
@@ -88,12 +92,12 @@ class SessionsElement extends Polymer.Element implements DatalabPageElement {
    */
   async _drawSessionList() {
     const sessionsDescriptions = await Promise.all(this._sessionList.map((session) =>
-        this._sessionToDescriptionPromise(session)));
+      this._sessionToDescriptionPromise(session)));
     (this.$.sessions as ItemListElement).rows = sessionsDescriptions.map((description) => {
-        return new ItemListRow({
-            columns: [description.name, description.kernel],
-            icon: description.icon,
-        });
+      return new ItemListRow({
+        columns: [description.name, description.kernel],
+        icon: description.icon,
+      });
     });
   }
 
@@ -105,7 +109,7 @@ class SessionsElement extends Polymer.Element implements DatalabPageElement {
    * default to using Jupyter as the file manager type.
    */
   _sessionToDescriptionPromise(session: Session, fileManagerType?: FileManagerType)
-      : Promise<SessionDescription> {
+    : Promise<SessionDescription> {
     if (fileManagerType) {
       const config = FileManagerFactory.getFileManagerConfig(fileManagerType);
       const description: SessionDescription = {
@@ -138,7 +142,7 @@ class SessionsElement extends Polymer.Element implements DatalabPageElement {
           };
           return description;
         });
-      }
+    }
   }
 
   /**
@@ -193,7 +197,7 @@ class SessionsElement extends Polymer.Element implements DatalabPageElement {
       // even if some other deletes completed.
       return Promise.all(shutdownPromises)
         .then(() => this._fetchSessionList());
-        // TODO: Handle delete errors properly by showing some message to the user
+      // TODO: Handle delete errors properly by showing some message to the user
     } else {
       return Promise.resolve(null);
     }

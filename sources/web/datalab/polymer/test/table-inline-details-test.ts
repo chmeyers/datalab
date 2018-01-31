@@ -12,6 +12,13 @@
  * the License.
  */
 
+import {BigQueryFile} from '../modules/bigquery-file-manager/bigquery-file-manager';
+import {GapiManager} from '../modules/gapi-manager/gapi-manager';
+import {DatalabFileId, DatalabFileType} from '../modules/file-manager/file-manager';
+import {FileManagerType} from '../modules/file-manager-factory/file-manager-factory';
+import TableInlineDetailsElement from '../components/table-inline-details/table-inline-details';
+import { fixture } from './test-utils';
+
 /*
  * For all Polymer component testing, be sure to call Polymer's flush() after
  * any code that will cause shadow dom redistribution, such as observed array

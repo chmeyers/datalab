@@ -17,6 +17,13 @@
  * wrapped in the FileManager class.
  */
 
+import {DatalabFile, BaseFileManager, DatalabFileId, DatalabFileType, NotebookContent}
+    from '../file-manager/file-manager';
+import {FileManagerType} from '../file-manager-factory/file-manager-factory';
+import {GapiManager} from '../gapi-manager/gapi-manager';
+import {Utils} from '../utils/utils';
+import { Column, ColumnTypeName } from '../../components/item-list/item-list';
+
 class DriveFile extends DatalabFile {
   lastModified?: Date;
   owner?: string;
@@ -29,7 +36,7 @@ class DriveFile extends DatalabFile {
 /**
  * An Google Drive specific file manager.
  */
-class DriveFileManager extends BaseFileManager {
+export class DriveFileManager extends BaseFileManager {
 
   private static readonly _directoryMimeType = 'application/vnd.google-apps.folder';
   private static readonly _notebookMimeType = 'application/json';
@@ -194,7 +201,7 @@ class DriveFileManager extends BaseFileManager {
 
 }
 
-class SharedDriveFileManager extends DriveFileManager {
+export class SharedDriveFileManager extends DriveFileManager {
 
   public async pathToFileHierarchy(path: string) {
     const pathFileHierarchy = await super.pathToFileHierarchy(path);

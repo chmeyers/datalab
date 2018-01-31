@@ -12,10 +12,14 @@
  * the License.
  */
 
+import {BaseDialogElement, BaseDialogOptions, BaseDialogCloseResult}
+    from '../../components/base-dialog/base-dialog';
+import { DatalabFileType } from '../file-manager/file-manager';
+
 /**
  * Class provides helper methods for various operations.
  */
-class Utils {
+export class Utils {
 
   static cookies: { [key: string]: string };
 
@@ -277,7 +281,7 @@ class Utils {
   }
 }
 
-class UnsupportedMethod extends Error {
+export class UnsupportedMethod extends Error {
   constructor(methodName: string, object: {}) {
     let type = 'Unknown';
     if (object && object.constructor && object.constructor.name) {

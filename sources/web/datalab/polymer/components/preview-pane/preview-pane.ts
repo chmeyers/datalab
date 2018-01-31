@@ -1,3 +1,5 @@
+import { DatalabFile } from "../../modules/file-manager/file-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

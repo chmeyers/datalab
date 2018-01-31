@@ -1,3 +1,6 @@
+import { SettingsManager } from "../../modules/settings-manager/settings-manager";
+import { Utils } from "../../modules/utils/utils";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -18,7 +21,7 @@
  * contains the Datalab logo, plus a few icons that are meant to persist
  * on all pages. It also contains dialogs that are opened by those buttons
  */
-class ToolbarElement extends Polymer.Element {
+export class ToolbarElement extends Polymer.Element {
 
   private _timeoutEnabled: boolean;
   private _userSettingsEnabled: boolean;

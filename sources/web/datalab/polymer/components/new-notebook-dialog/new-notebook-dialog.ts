@@ -1,3 +1,6 @@
+import { BaseDialogCloseResult, BaseDialogElement } from "../base-dialog/base-dialog";
+import { Utils } from "../../modules/utils/utils";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -16,7 +19,7 @@
  * Dialog close context, includes whether the dialog was confirmed, any
  * user input given, and the kernel selected by the user.
  */
-interface NewNotebookDialogCloseResult extends BaseDialogCloseResult {
+export interface NewNotebookDialogCloseResult extends BaseDialogCloseResult {
   userInput: string;
   kernel: string;
 }
@@ -27,7 +30,7 @@ interface NewNotebookDialogCloseResult extends BaseDialogCloseResult {
  * a dropdown list with possible kernel values. The default kernel will be
  * selected.
  */
-class NewNotebookDialogElement extends BaseDialogElement {
+export class NewNotebookDialogElement extends BaseDialogElement {
 
   protected static _memoizedTemplate: PolymerTemplate;
 

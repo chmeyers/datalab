@@ -1,3 +1,16 @@
+import { DatalabFile, FileManager, DatalabFileId, DatalabFileType } from "../../modules/file-manager/file-manager";
+import { FileManagerType, FileManagerFactory } from "../../modules/file-manager-factory/file-manager-factory";
+import { Utils } from "../../modules/utils/utils";
+import { ItemListElement, InlineDetailsDisplayMode, ItemListRow } from "../item-list/item-list";
+import { BaseDialogOptions, BaseDialogCloseResult, BaseDialogElement } from "../base-dialog/base-dialog";
+import { JupyterFileManager, JupyterFile } from "../../modules/jupyter-file-manager/jupyter-file-manager";
+import { InputDialogOptions, InputDialogElement, InputDialogCloseResult } from "../input-dialog/input-dialog";
+import { NewNotebookDialogElement, NewNotebookDialogCloseResult } from "../new-notebook-dialog/new-notebook-dialog";
+import { DeleteDialogOptions, DeleteDialogElement } from "../delete-dialog/delete-dialog";
+import { DirectoryPickerDialogOptions, DirectoryPickerDialogCloseResult, DirectoryPickerDialogElement } from "../directory-picker-dialog/directory-picker-dialog";
+import { SettingsManager } from "../../modules/settings-manager/settings-manager";
+import { InlineDetailsPaneElement } from "../inline-details-pane/inline-details-pane";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -31,7 +44,7 @@
  * and no selection. It also doesn't do anything when a file is double clicked.
  * This is meant to be used for browsing only, such as the case for picking files or directories.
  */
-class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
+export default class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
 
   /**
    * Promise that gets resolved when the element finished initialization.

@@ -1,3 +1,5 @@
+import { GithubCache, GithubCacheEntry } from "../modules/github-file-manager/github-file-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

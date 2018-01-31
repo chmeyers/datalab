@@ -12,6 +12,11 @@
  * the License.
  */
 
+import { DatalabFile, DatalabFileType, NotebookContent }
+  from '../../modules/file-manager/file-manager';
+import { FileManagerFactory } from '../../modules/file-manager-factory/file-manager-factory';
+import { Utils } from '../../modules/utils/utils';
+
 // Instead of writing a .d.ts file containing this one line.
 declare function markdownit(): {
   render(markdown: string): string;
@@ -24,7 +29,7 @@ declare function markdownit(): {
 /**
  * Notebook preview element for Datalab.
  */
-class NotebookPreviewElement extends Polymer.Element {
+export default class NotebookPreviewElement extends Polymer.Element {
 
   static _noFileMessage = 'Select an item to view a preview.';
   static _emptyNotebookMessage = 'Empty notebook.';
@@ -82,7 +87,7 @@ class NotebookPreviewElement extends Polymer.Element {
    */
   _reloadPreview(newFile: DatalabFile) {
     if (!newFile || !this.active ||
-        newFile.type !== DatalabFileType.NOTEBOOK) {
+      newFile.type !== DatalabFileType.NOTEBOOK) {
       this._showPreview = false;
       this._message = NotebookPreviewElement._noFileMessage;
       return;

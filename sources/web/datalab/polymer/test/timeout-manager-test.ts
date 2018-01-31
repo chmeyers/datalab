@@ -1,3 +1,5 @@
+import TimeoutManager from "../modules/timeout-manager/timeout-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

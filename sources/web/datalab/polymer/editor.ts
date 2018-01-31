@@ -1,3 +1,7 @@
+import DatalabEditorElement from "./components/datalab-editor/datalab-editor";
+import { DatalabFileId } from "./modules/file-manager/file-manager";
+import { Utils } from "./modules/utils/utils";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

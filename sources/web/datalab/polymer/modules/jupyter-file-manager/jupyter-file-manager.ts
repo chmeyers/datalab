@@ -18,7 +18,15 @@
  * these APIs to help with type checking.
  */
 
-class JupyterFile extends DatalabFile {
+import { DatalabFile, DatalabFileType, BaseFileManager, DatalabFileId }
+  from '../file-manager/file-manager';
+import { FileManagerType } from '../file-manager-factory/file-manager-factory';
+import { Utils } from '../utils/utils';
+import { ApiManager, XhrOptions, ServiceId } from '../api-manager/api-manager';
+import { Column, ColumnTypeName } from '../../components/item-list/item-list';
+import { SettingsManager } from '../settings-manager/settings-manager';
+
+export class JupyterFile extends DatalabFile {
   created?: string;
   format: string;
   lastModified?: string;
@@ -41,8 +49,8 @@ class JupyterFile extends DatalabFile {
       return superPreview;
     }
     if (this.mimetype && (
-        this.mimetype.indexOf('text/') > -1 ||
-        this.mimetype.indexOf('application/json') > -1
+      this.mimetype.indexOf('text/') > -1 ||
+      this.mimetype.indexOf('application/json') > -1
     )) {
       return 'text';
     }
@@ -53,7 +61,7 @@ class JupyterFile extends DatalabFile {
 /**
  * An Jupyter-specific file manager.
  */
-class JupyterFileManager extends BaseFileManager {
+export class JupyterFileManager extends BaseFileManager {
 
   /**
    * Converts the given JupyterFile into the type understood by the Jupyter
@@ -135,7 +143,7 @@ class JupyterFileManager extends BaseFileManager {
       noCache: true,
     };
     return ApiManager.sendRequestAsync(
-        ApiManager.getServiceUrl(ServiceId.CONTENT) + '/' + fileId.path, xhrOptions)
+      ApiManager.getServiceUrl(ServiceId.CONTENT) + '/' + fileId.path, xhrOptions)
       .then((file: any) => JupyterFileManager._upstreamFileToJupyterFile(file));
   }
 
@@ -181,7 +189,7 @@ class JupyterFileManager extends BaseFileManager {
       successCodes: [200, 201],
     };
     const requestPath =
-        ApiManager.getServiceUrl(ServiceId.CONTENT) + '/' + file.id.path;
+      ApiManager.getServiceUrl(ServiceId.CONTENT) + '/' + file.id.path;
     return ApiManager.sendRequestAsync(requestPath, xhrOptions)
       .then((savedFile: any) => JupyterFileManager._upstreamFileToJupyterFile(savedFile));
   }
@@ -190,7 +198,7 @@ class JupyterFileManager extends BaseFileManager {
     const container = await this._getFileWithContent(containerId.path);
     if (container.type !== 'directory') {
       throw new Error('Can only list files in a directory. Found type: ' +
-          typeof(container.type));
+        typeof (container.type));
     }
 
     const files = container.content;
@@ -199,12 +207,12 @@ class JupyterFileManager extends BaseFileManager {
 
   public getColumns(): Column[] {
     return [{
-        name: Utils.constants.columns.name,
-        type: ColumnTypeName.STRING,
-      }, {
-        name: Utils.constants.columns.lastModified,
-        type: ColumnTypeName.DATE,
-      }];
+      name: Utils.constants.columns.name,
+      type: ColumnTypeName.STRING,
+    }, {
+      name: Utils.constants.columns.lastModified,
+      type: ColumnTypeName.DATE,
+    }];
   }
 
   public create(fileType: DatalabFileType, containerId?: DatalabFileId, name?: string) {
@@ -229,7 +237,7 @@ class JupyterFileManager extends BaseFileManager {
       successCodes: [201],
     };
     let createPromise = ApiManager.sendRequestAsync(ApiManager.getServiceUrl(ServiceId.CONTENT),
-        xhrOptions)
+      xhrOptions)
       .then((file) => JupyterFileManager._upstreamFileToJupyterFile(file));
 
     // If a path is provided for naming the new item, request the rename, and
@@ -253,7 +261,7 @@ class JupyterFileManager extends BaseFileManager {
   public rename(oldFileId: DatalabFileId, newName: string, newContainerId?: DatalabFileId) {
     const oldPath = ApiManager.getServiceUrl(ServiceId.CONTENT) + '/' + oldFileId.path;
     let newPath = newContainerId ?
-        newContainerId.path : JupyterFileManager._getParentDir(oldFileId.path);
+      newContainerId.path : JupyterFileManager._getParentDir(oldFileId.path);
     newPath += '/' + newName;
     const xhrOptions: XhrOptions = {
       failureCodes: [409],
@@ -309,9 +317,9 @@ class JupyterFileManager extends BaseFileManager {
     }
     const tokens = path.split('/').filter((p) => !!p);
     const pathFileHierarchy = tokens.map((token, i) => new JupyterFile(
-        new DatalabFileId(tokens.slice(0, i + 1).join('/'), FileManagerType.JUPYTER),
-        token,
-        DatalabFileType.DIRECTORY,
+      new DatalabFileId(tokens.slice(0, i + 1).join('/'), FileManagerType.JUPYTER),
+      token,
+      DatalabFileType.DIRECTORY,
     ));
     return pathFileHierarchy;
   }
@@ -324,6 +332,6 @@ class JupyterFileManager extends BaseFileManager {
       noCache: true,
     };
     return ApiManager.sendRequestAsync(
-        ApiManager.getServiceUrl(ServiceId.CONTENT) + '/' + fileId, xhrOptions);
+      ApiManager.getServiceUrl(ServiceId.CONTENT) + '/' + fileId, xhrOptions);
   }
 }

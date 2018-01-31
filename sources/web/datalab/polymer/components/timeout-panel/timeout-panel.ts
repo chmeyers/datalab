@@ -1,3 +1,5 @@
+import TimeoutManager from "../../modules/timeout-manager/timeout-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -19,7 +21,7 @@
  * This element provides a timeout icon and a timeout status string.
  * When the icon is clicked, it toggles whether the idle timeout is enabled.
  */
-class TimeoutPanel extends Polymer.Element {
+export default class TimeoutPanel extends Polymer.Element {
 
   private static _displayInterval = 1000;  // Update display every second
   private static _queryIntervalWhenEnabled = 15 * 1000;  // How often to query when timeout is enabled

@@ -14,11 +14,17 @@
 
 /// <reference path="../file-browser/file-browser.ts" />
 
+import {BaseDialogElement, BaseDialogCloseResult, BaseDialogOptions}
+    from '../base-dialog/base-dialog';
+import {DatalabFile, DatalabFileId} from '../../modules/file-manager/file-manager';
+import {Utils} from '../../modules/utils/utils';
+import FileBrowserElement from '../file-browser/file-browser';
+
 /**
  * Dialog close context, includes whether the dialog was confirmed, and the user selected
  * directory path.
  */
-interface DirectoryPickerDialogCloseResult extends BaseDialogCloseResult {
+export interface DirectoryPickerDialogCloseResult extends BaseDialogCloseResult {
   selectedDirectory: DatalabFile;
   fileName?: string;
 }
@@ -26,7 +32,7 @@ interface DirectoryPickerDialogCloseResult extends BaseDialogCloseResult {
 /**
  * Options for opening a directory picker dialog.
  */
-interface DirectoryPickerDialogOptions extends BaseDialogOptions {
+export interface DirectoryPickerDialogOptions extends BaseDialogOptions {
   fileId?: string;    // The initial directory to use
   fileName?: string;
   withFileName: boolean;
@@ -40,7 +46,7 @@ interface DirectoryPickerDialogOptions extends BaseDialogOptions {
  * without the ability to select files.
  * The dialog returns the user selected directory path, if any.
  */
-class DirectoryPickerDialogElement extends BaseDialogElement {
+export class DirectoryPickerDialogElement extends BaseDialogElement {
 
   private static _memoizedTemplate: PolymerTemplate;
 

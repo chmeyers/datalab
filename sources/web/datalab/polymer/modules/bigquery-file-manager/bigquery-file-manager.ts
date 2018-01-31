@@ -12,15 +12,21 @@
  * the License.
  */
 
+import { DatalabFile, DatalabFileType, BaseFileManager, DatalabFileId }
+  from '../file-manager/file-manager';
+import { FileManagerType } from '../file-manager-factory/file-manager-factory';
+import { Utils, UnsupportedMethod } from '../../modules/utils/utils';
+import { GapiManager } from '../gapi-manager/gapi-manager';
+import { HttpResponse } from '../../test/test-utils';
+import { ColumnTypeName, Column } from '../../components/item-list/item-list';
+
 type ListDatasetsResponse = gapi.client.bigquery.ListDatasetsResponse;
-type ListProjectsResponse = gapi.client.bigquery.ListProjectsResponse;
 type ListTablesResponse = gapi.client.bigquery.ListTablesResponse;
 type DatasetResource = gapi.client.bigquery.DatasetResource;
-type ProjectResource = gapi.client.bigquery.ProjectResource;
 type TableResource = gapi.client.bigquery.TableResource;
 type ResourceManagerProject = gapi.client.cloudresourcemanager.Project;
 
-class BigQueryFile extends DatalabFile {
+export class BigQueryFile extends DatalabFile {
   public getInlineDetailsName(): string {
     if (this.type === DatalabFileType.FILE) {
       return 'table';
@@ -40,7 +46,7 @@ class BigQueryFile extends DatalabFile {
  * A file manager that wraps the BigQuery API so that we can browse BQ projects,
  * datasets, and tables like a filesystem.
  */
-class BigQueryFileManager extends BaseFileManager {
+export class BigQueryFileManager extends BaseFileManager {
   public get(fileId: DatalabFileId): Promise<DatalabFile> {
     if (fileId.path === '/') {
       return Promise.resolve(this._bqRootDatalabFile());
@@ -100,12 +106,12 @@ class BigQueryFileManager extends BaseFileManager {
   }
 
   public create(_fileType: DatalabFileType, _containerId: DatalabFileId, _name: string):
-      Promise<DatalabFile> {
+    Promise<DatalabFile> {
     throw new UnsupportedMethod('create', this);
   }
 
   public rename(_oldFileId: DatalabFileId, _name: string, _newContainerId?: DatalabFileId):
-      Promise<DatalabFile> {
+    Promise<DatalabFile> {
     throw new UnsupportedMethod('rename', this);
   }
 
@@ -148,7 +154,7 @@ class BigQueryFileManager extends BaseFileManager {
         this._bqProjectIdToDatalabFile(pathParts[0]),
         this._bqProjectDatasetIdsToDatalabFile(pathParts[0], pathParts[1]),
         this._bqProjectDatasetTableIdsToDatalabFile(
-            pathParts[0], pathParts[1], pathParts[2]),
+          pathParts[0], pathParts[1], pathParts[2]),
       ];
     }
   }
@@ -172,7 +178,7 @@ class BigQueryFileManager extends BaseFileManager {
       return (a.projectId || '').localeCompare(b.projectId || '');
     });
     return resourceProjects.map((rmProject) =>
-        this._bqProjectIdToDatalabFile(rmProject.projectId || ''));
+      this._bqProjectIdToDatalabFile(rmProject.projectId || ''));
   }
 
   protected _bqProjectIdToDatalabFile(projectId: string): DatalabFile {
@@ -186,10 +192,10 @@ class BigQueryFileManager extends BaseFileManager {
   }
 
   private async _collectAllDatasets(projectId: string,
-                                    accumulatedDatasets: DatasetResource[],
-                                    pageToken: string): Promise<DatalabFile[]> {
+    accumulatedDatasets: DatasetResource[],
+    pageToken: string): Promise<DatalabFile[]> {
     const response: HttpResponse<ListDatasetsResponse> =
-        await GapiManager.bigquery.listDatasets(projectId, pageToken);
+      await GapiManager.bigquery.listDatasets(projectId, pageToken);
     const additionalDatasets = response.result.datasets || [];
     const datasets = accumulatedDatasets.concat(additionalDatasets);
     if (response.result.nextPageToken) {
@@ -199,7 +205,7 @@ class BigQueryFileManager extends BaseFileManager {
         return a.datasetReference.datasetId.localeCompare(b.datasetReference.datasetId);
       });
       return datasets.map(
-          this._bqDatasetToDatalabFile.bind(this)) as DatalabFile[];
+        this._bqDatasetToDatalabFile.bind(this)) as DatalabFile[];
     }
   }
 
@@ -209,10 +215,10 @@ class BigQueryFileManager extends BaseFileManager {
   }
 
   private async _collectAllTables(projectId: string, datasetId: string,
-                                  accumulatedTables: TableResource[],
-                                  pageToken: string): Promise<DatalabFile[]> {
+    accumulatedTables: TableResource[],
+    pageToken: string): Promise<DatalabFile[]> {
     const response: HttpResponse<ListTablesResponse> =
-        await GapiManager.bigquery.listTables(projectId, datasetId, pageToken);
+      await GapiManager.bigquery.listTables(projectId, datasetId, pageToken);
     const additionalTables = response.result.tables || [];
     const tables = accumulatedTables.concat(additionalTables);
     if (response.result.nextPageToken) {
@@ -222,7 +228,7 @@ class BigQueryFileManager extends BaseFileManager {
         return a.tableReference.tableId.localeCompare(b.tableReference.tableId);
       });
       return tables.map(
-          this._bqTableToDatalabFile.bind(this)) as DatalabFile[];
+        this._bqTableToDatalabFile.bind(this)) as DatalabFile[];
     }
   }
 
@@ -243,7 +249,7 @@ class BigQueryFileManager extends BaseFileManager {
 
   private _bqDatasetToDatalabFile(bqDataset: DatasetResource): DatalabFile {
     return this._bqProjectDatasetIdsToDatalabFile(
-        bqDataset.datasetReference.projectId, bqDataset.datasetReference.datasetId);
+      bqDataset.datasetReference.projectId, bqDataset.datasetReference.datasetId);
   }
 
   private _bqProjectDatasetIdsToDatalabFile(projectId: string, datasetId: string): DatalabFile {
@@ -265,7 +271,7 @@ class BigQueryFileManager extends BaseFileManager {
   }
 
   private _bqProjectDatasetTableIdsToDatalabFile(
-      projectId: string, datasetId: string, tableId: string, isView?: boolean): DatalabFile {
+    projectId: string, datasetId: string, tableId: string, isView?: boolean): DatalabFile {
     const path = projectId + '/' + datasetId + '/' + tableId;
     const icon = isView ? 'datalab-icons:bq-view' : 'datalab-icons:bq-table';
     return new BigQueryFile(
@@ -282,7 +288,7 @@ class BigQueryFileManager extends BaseFileManager {
  * project returns a list of projects such as bigquery-public-data that contain
  * public datasets.
  */
-class BigQueryPublicFileManager extends BigQueryFileManager {
+export class BigQueryPublicFileManager extends BigQueryFileManager {
   publicProjectNames = [
     'bigquery-public-data',
     'gdelt-bq',
@@ -296,7 +302,7 @@ class BigQueryPublicFileManager extends BigQueryFileManager {
 
   protected _listProjects(): Promise<DatalabFile[]> {
     const datalabFiles = this.publicProjectNames.map(
-        this._bqProjectIdToDatalabFile.bind(this)) as DatalabFile[];
+      this._bqProjectIdToDatalabFile.bind(this)) as DatalabFile[];
     return Promise.resolve(datalabFiles);
   }
 }

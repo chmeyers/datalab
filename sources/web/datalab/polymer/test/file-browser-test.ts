@@ -1,3 +1,16 @@
+import { DatalabFileId, DatalabFile, DatalabFileType } from "../modules/file-manager/file-manager";
+import { FileManagerType, FileManagerFactory } from "../modules/file-manager-factory/file-manager-factory";
+import { MockFileManager, MockFile, fixture, TestUtils } from "./test-utils";
+import { Utils } from "../modules/utils/utils";
+import { InputDialogElement } from "../components/input-dialog/input-dialog";
+import { NewNotebookDialogElement } from "../components/new-notebook-dialog/new-notebook-dialog";
+import * as sinon from '../node_modules/@types/sinon/index';
+import FileBrowserElement from "../components/file-browser/file-browser";
+import { SettingsManager } from "../modules/settings-manager/settings-manager";
+import { ApiManager } from "../modules/api-manager/api-manager";
+import { ItemListElement, ItemListRow } from "../components/item-list/item-list";
+import { SessionManager } from "../modules/session-manager/session-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

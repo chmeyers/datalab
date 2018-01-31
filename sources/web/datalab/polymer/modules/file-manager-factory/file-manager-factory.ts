@@ -12,7 +12,14 @@
  * the License.
  */
 
-enum FileManagerType {
+import { BigQueryFileManager, BigQueryPublicFileManager }
+  from '../bigquery-file-manager/bigquery-file-manager';
+import { DriveFileManager, SharedDriveFileManager } from '../drive-file-manager/drive-file-manager';
+import { GithubFileManager } from '../github-file-manager/github-file-manager';
+import { JupyterFileManager } from '../jupyter-file-manager/jupyter-file-manager';
+import { FileManager } from '../file-manager/file-manager';
+
+export enum FileManagerType {
   BIG_QUERY = 'bigquery',
   BIG_QUERY_PUBLIC = 'bigqueryPublic',
   DRIVE = 'drive',
@@ -34,12 +41,12 @@ interface FileManagerConfig {
 /**
  * Maintains and gets the static FileManager singleton.
  */
-class FileManagerFactory {
+export class FileManagerFactory {
 
   /**
    * Dependency custom element for ApiManager
    */
-  private static _fileManagerConfig = new Map<FileManagerType, FileManagerConfig> ([
+  private static _fileManagerConfig = new Map<FileManagerType, FileManagerConfig>([
     [
       FileManagerType.BIG_QUERY, {
         displayIcon: 'datalab-icons:bigquery-logo',

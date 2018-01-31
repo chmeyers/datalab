@@ -12,6 +12,8 @@
  * the License.
  */
 
+import {Utils} from '../modules/utils/utils';
+
 describe('Utils', () => {
 
   describe('readCookie', () => {

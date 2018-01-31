@@ -1,3 +1,9 @@
+import { GapiManager } from "../modules/gapi-manager/gapi-manager";
+import { fixture } from "./test-utils";
+import { SettingsManager } from "../modules/settings-manager/settings-manager";
+import { ToolbarElement } from "../components/datalab-toolbar/datalab-toolbar";
+import { ApiManager } from "../modules/api-manager/api-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

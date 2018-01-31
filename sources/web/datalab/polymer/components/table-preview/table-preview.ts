@@ -1,3 +1,10 @@
+import { BigQueryFile } from "../../modules/bigquery-file-manager/bigquery-file-manager";
+import { FileManager } from "../../modules/file-manager/file-manager";
+import { FileManagerFactory } from "../../modules/file-manager-factory/file-manager-factory";
+import { GapiManager } from "../../modules/gapi-manager/gapi-manager";
+import { Utils } from "../../modules/utils/utils";
+import { HttpResponse } from "../../test/test-utils";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -12,8 +19,6 @@
  * the License.
  */
 
-type HttpResponse<T> = gapi.client.HttpRequestFulfilled<T>;
-
 /**
  * Table preview pane element for Datalab.
  * This element is designed to be displayed in a side bar that displays more
@@ -22,7 +27,7 @@ type HttpResponse<T> = gapi.client.HttpRequestFulfilled<T>;
  * way they are presented. This is not necessarily the best experience, and we
  * might want to revisit this.
  */
-class TablePreviewElement extends Polymer.Element {
+export class TablePreviewElement extends Polymer.Element {
 
   /**
    * File whose details to show.

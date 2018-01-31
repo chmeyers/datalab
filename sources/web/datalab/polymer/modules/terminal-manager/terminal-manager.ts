@@ -1,3 +1,5 @@
+import { ServiceId, ApiManager, XhrOptions } from "../api-manager/api-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -24,7 +26,7 @@ interface JupyterTerminal {
 /**
  * Handles different API calls to the backend's terminals service.
  */
-class TerminalManager {
+export default class TerminalManager {
 
   /**
    * Initializes a terminal session.

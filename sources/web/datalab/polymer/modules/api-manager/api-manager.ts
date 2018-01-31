@@ -1,3 +1,5 @@
+import { GapiManager } from "../gapi-manager/gapi-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -20,7 +22,7 @@
  *  - parameters: Set of parameters to pass to the xhr request.
  *  - successCodes: Only treat the request as successful if the return code is in this list.
  */
-interface XhrOptions {
+export interface XhrOptions {
   failureCodes?: number[];
   headers?: {[key: string]: string};
   method?: string;
@@ -32,7 +34,7 @@ interface XhrOptions {
 /**
  * A list of services offered by backends.
  */
-enum ServiceId {
+export enum ServiceId {
   APP_SETTINGS,
   BASE_PATH,
   CONTENT,
@@ -55,7 +57,7 @@ interface XssiResponse {
  * An abstraction for sending xhr requests to the backend service, including
  * getting the basepath for all upcoming requests
  */
-class ApiManager {
+export class ApiManager {
 
   public static isConnected = true;
 

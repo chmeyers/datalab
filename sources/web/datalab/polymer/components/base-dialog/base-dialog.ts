@@ -15,14 +15,14 @@
 /**
  * Dialog close context, includes whether the dialog was confirmed.
  */
-interface BaseDialogCloseResult {
+export interface BaseDialogCloseResult {
   confirmed: boolean;
 }
 
 /**
  * Options for opening a base dialog.
  */
-interface BaseDialogOptions extends Object {
+export interface BaseDialogOptions extends Object {
   big?: boolean;
   cancelLabel?: string;
   isError?: boolean;
@@ -36,7 +36,7 @@ interface BaseDialogOptions extends Object {
  * (including other custom elements) inside it. This can be best done by stamping the
  * subclass's element template into the #body element of this class.
  */
-class BaseDialogElement extends Polymer.Element {
+export class BaseDialogElement extends Polymer.Element {
 
   /**
    * Title string of the dialog, shows up as <h2>

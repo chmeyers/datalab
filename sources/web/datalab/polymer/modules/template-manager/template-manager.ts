@@ -12,6 +12,11 @@
  * the License.
  */
 
+import {DatalabFileId, NotebookContent, NotebookCell} from '../file-manager/file-manager';
+import {FileManagerType, FileManagerFactory} from '../file-manager-factory/file-manager-factory';
+import {Utils} from '../utils/utils';
+import { ApiManager } from '../api-manager/api-manager';
+
 // Parameter placeholders are of the form #${foo} for key foo, which will be
 // replaced by the value of foo passed in to the NotebookTemplate constructor.
 // Placeholders in the template which are not specified in the parameters
@@ -26,7 +31,7 @@ interface TemplateParameter {
   value: string | number;
 }
 
-enum TEMPLATE_NAME {
+export enum TEMPLATE_NAME {
   bigqueryOverview = 'bigqueryOverview',
   newNotebook = 'newNotebook',
 }
@@ -160,7 +165,7 @@ class NewNotebookTemplate extends NotebookTemplate {
  * existence of a given template on disk and ensures it has the right
  * parameters.
  */
-class TemplateManager extends Polymer.Element {
+export class TemplateManager extends Polymer.Element {
 
   public static async newNotebookFromTemplate(name: string, params: {}, kernel?: string) {
     let templateClassName: new ({}) => NotebookTemplate;

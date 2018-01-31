@@ -14,6 +14,9 @@
 
 /// <reference path="../../node_modules/@types/socket.io-client/index.d.ts" />
 
+import { GapiManager } from "../../modules/gapi-manager/gapi-manager";
+import { ApiManager } from "../../modules/api-manager/api-manager";
+
 enum WebSocketState {
   CLOSED = 0,
   OPEN = 1,
@@ -25,7 +28,7 @@ enum WebSocketState {
  * on the Datalab server that expects socket.io traffic and converts it back to
  * WebSocket.
  */
-class DatalabWebSocketShim {
+export class DatalabWebSocketShim {
   public readyState: WebSocketState;
   public onerror: ((_: any) => void)|null = null;
   public onopen: ((_: any) => void)|null = null;

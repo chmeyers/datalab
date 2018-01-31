@@ -1,3 +1,5 @@
+import { Utils } from "../../modules/utils/utils";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -12,15 +14,15 @@
  * the License.
  */
 
-type ColumnType = Date|number|string;
+export type ColumnType = Date|number|string;
 
-enum ColumnTypeName {
+export enum ColumnTypeName {
   DATE,
   NUMBER,
   STRING,
 }
 
-interface Column {
+export interface Column {
   name: string;
   type: ColumnTypeName;
 }
@@ -29,7 +31,7 @@ interface Column {
  * Mode definition for which items, out of all items that are capable
  * of showing details, actually show those details.
  */
-enum InlineDetailsDisplayMode {
+export enum InlineDetailsDisplayMode {
   NONE,               // Don't show any inline details elements
   SINGLE_SELECT,      // Show details only when a single item is selected
   MULTIPLE_SELECT,    // Show details for all selected items
@@ -52,7 +54,7 @@ interface ItemListRowParameters {
 /**
  * Object representing a row in the item list
  */
-class ItemListRow {
+export class ItemListRow {
   public selected: boolean;
   public columns: ColumnType[];
   public canShowDetails: boolean;
@@ -153,7 +155,7 @@ class ItemListRow {
  * If the "disable-selection" attribute is specified, the checkboxes are
  * hidden, and clicking items does not select them.
  */
-class ItemListElement extends Polymer.Element {
+export class ItemListElement extends Polymer.Element {
 
   /**
    * List of data rows, each implementing the row interface

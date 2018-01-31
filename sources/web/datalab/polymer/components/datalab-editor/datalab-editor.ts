@@ -12,15 +12,26 @@
  * the License.
  */
 
-/// <reference path="../datalab-notification/datalab-notification.ts" />
-/// <reference path="../../node_modules/@types/codemirror/index.d.ts" />
+import {DatalabFileId, DatalabFile, DatalabFileType}
+    from '../../modules/file-manager/file-manager';
+import {FileManager} from '../../modules/file-manager/file-manager';
+import {FileManagerFactory, FileManagerType}
+    from '../../modules/file-manager-factory/file-manager-factory';
+import {DirectoryPickerDialogElement, DirectoryPickerDialogOptions,
+        DirectoryPickerDialogCloseResult}
+    from '../directory-picker-dialog/directory-picker-dialog';
+import {InputDialogCloseResult, InputDialogElement, InputDialogOptions}
+    from '../input-dialog/input-dialog';
+import * as CodeMirror from '../../node_modules/@types/codemirror/index';
+import {Utils} from '../../modules/utils/utils';
+import { SettingsManager } from '../../modules/settings-manager/settings-manager';
 
 /**
  * Editor element for Datalab.
  * Contains a <datalab-toolbar> element at the top, and a full screen editor
  * that uses CodeMirror.
  */
-class DatalabEditorElement extends Polymer.Element {
+export default class DatalabEditorElement extends Polymer.Element {
 
   /**
    * FileId object for the file to load in the editor.

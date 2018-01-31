@@ -1,3 +1,7 @@
+import { fixture } from "./test-utils";
+import TimeoutManager from "../modules/timeout-manager/timeout-manager";
+import TimeoutPanel from "../components/timeout-panel/timeout-panel";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

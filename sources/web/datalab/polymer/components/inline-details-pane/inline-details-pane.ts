@@ -1,3 +1,5 @@
+import { DatalabFile } from "../../modules/file-manager/file-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -15,7 +17,7 @@
 /**
  * Inline details pane element for Datalab.
  */
-class InlineDetailsPaneElement extends Polymer.Element {
+export class InlineDetailsPaneElement extends Polymer.Element {
 
   /**
    * Currently displayed inline-details pane name.

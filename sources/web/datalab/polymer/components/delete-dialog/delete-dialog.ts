@@ -12,10 +12,14 @@
  * the License.
  */
 
+import { BaseDialogElement, BaseDialogOptions } from '../base-dialog/base-dialog';
+import { Utils } from '../../modules/utils/utils';
+import { ItemListRow, ItemListElement } from '../item-list/item-list';
+
 /**
  * Options for opening a delete dialog.
  */
-interface DeleteDialogOptions extends BaseDialogOptions {
+export interface DeleteDialogOptions extends BaseDialogOptions {
   deletedList: ItemListRow[];
 }
 
@@ -24,7 +28,7 @@ interface DeleteDialogOptions extends BaseDialogOptions {
  * This element is a modal dialog that presents the user with list of items to
  * be deleted.
  */
-class DeleteDialogElement extends BaseDialogElement {
+export class DeleteDialogElement extends BaseDialogElement {
 
   private static _memoizedTemplate: PolymerTemplate;
 

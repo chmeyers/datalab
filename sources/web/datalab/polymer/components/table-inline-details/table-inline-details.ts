@@ -1,3 +1,15 @@
+import { BigQueryFile } from "../../modules/bigquery-file-manager/bigquery-file-manager";
+import { FileManager } from "../../modules/file-manager/file-manager";
+import { FileManagerFactory } from "../../modules/file-manager-factory/file-manager-factory";
+import { GapiManager } from "../../modules/gapi-manager/gapi-manager";
+import { Utils } from "../../modules/utils/utils";
+import { DirectoryPickerDialogOptions, DirectoryPickerDialogElement,
+         DirectoryPickerDialogCloseResult }
+    from "../directory-picker-dialog/directory-picker-dialog";
+import { TEMPLATE_NAME } from "../../modules/template-manager/template-manager";
+import { HttpResponse } from "../../test/test-utils";
+import { SettingsManager } from "../../modules/settings-manager/settings-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -17,7 +29,7 @@
  * Displays information about the selected BigQuery table file inline in the
  * file browser item list.
  */
-class TableInlineDetailsElement extends Polymer.Element {
+export default class TableInlineDetailsElement extends Polymer.Element {
 
   /**
    * File whose details to show.

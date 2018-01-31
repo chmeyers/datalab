@@ -13,7 +13,11 @@
  */
 
 /// <reference path="../../../../../../third_party/externs/ts/gapi/bigquery.d.ts" />
-/// <reference path="../../../../../../third_party/externs/ts/gapi/drive.d.ts" />
+
+import { Utils } from '../utils/utils';
+import { HttpResponse } from '../../test/test-utils';
+import { XhrOptions, ApiManager } from '../api-manager/api-manager';
+import { SettingsManager } from '../settings-manager/settings-manager';
 
 class MissingClientIdError extends Error {
   message = 'No oauth2ClientId found in app settings or config';
@@ -30,10 +34,10 @@ interface GapiAuth {
   getAccessToken(): Promise<string>;
   getSignedInEmail(): Promise<string>;
   listenForSignInChanges(signInChangedCallback: (isSignedIn: boolean) => void):
-      Promise<void>;
+    Promise<void>;
   loadGapiAndScopes(
-      moduleName: string, moduleVersion: string, scopes: GapiScopes):
-      Promise<void>;
+    moduleName: string, moduleVersion: string, scopes: GapiScopes):
+    Promise<void>;
   signIn(doPrompt?: boolean): Promise<void>;
   signOut(): Promise<void>;
   isServerAuth(): boolean;
@@ -41,7 +45,7 @@ interface GapiAuth {
 
 // Ask for all necesary scopes up front so we don't need to ask again later.
 // Cloud-platform scope covers BigQuery and GCS but not Drive.
-const initialScopes = [ GapiScopes.SIGNIN, GapiScopes.CLOUD, GapiScopes.DRIVE ];
+const initialScopes = [GapiScopes.SIGNIN, GapiScopes.CLOUD, GapiScopes.DRIVE];
 
 class ClientAuth implements GapiAuth {
 
@@ -94,7 +98,7 @@ class ClientAuth implements GapiAuth {
    * with the changes.
    */
   public listenForSignInChanges(signInChangedCallback: (isSignedIn: boolean) => void):
-      Promise<void> {
+    Promise<void> {
     return this._loadGapi()
       .then(() => {
         // Initialize the callback now
@@ -134,8 +138,8 @@ class ClientAuth implements GapiAuth {
    * Loads the requested gapi module and ensures we have the requested scope.
    */
   public async loadGapiAndScopes(
-      moduleName: string, moduleVersion: string, scopes: GapiScopes):
-      Promise<void> {
+    moduleName: string, moduleVersion: string, scopes: GapiScopes):
+    Promise<void> {
     await this._loadGapi();
     await gapi.client.load(moduleName, moduleVersion);
     await this._grantScope(scopes);
@@ -175,7 +179,7 @@ class ClientAuth implements GapiAuth {
    * @param signInChangedCallback callback to be called when the signed-in state changes
    * @returns a promise that completes when the load is done or has failed
    */
-   private _loadGapi(): Promise<void> {
+  private _loadGapi(): Promise<void> {
     // Loads the gapi client library and the auth2 library together for efficiency.
     // Loading the auth2 library is optional here since `gapi.client.init` function will load
     // it if not already loaded. Loading it upfront can save one network request.
@@ -190,7 +194,7 @@ class ClientAuth implements GapiAuth {
             reject(e);
           });
       })
-      .then(() => this._initClient());
+        .then(() => this._initClient());
     }
 
     return this._loadPromise;
@@ -212,12 +216,12 @@ class ClientAuth implements GapiAuth {
       scope: initialScopeString,
       ux_mode: 'redirect',
     })
-    // The return value of gapi.auth2.init is not a normal promise
-    .then(() => {
-      this._currentUser = gapi.auth2.getAuthInstance().currentUser.get();
-    }, (errorReason: any) => {
-      throw new Error('Error in gapi auth: ' + errorReason.details);
-    });
+      // The return value of gapi.auth2.init is not a normal promise
+      .then(() => {
+        this._currentUser = gapi.auth2.getAuthInstance().currentUser.get();
+      }, (errorReason: any) => {
+        throw new Error('Error in gapi auth: ' + errorReason.details);
+      });
   }
 
   /**
@@ -270,13 +274,13 @@ class ClientAuth implements GapiAuth {
         return 'https://www.googleapis.com/auth/cloud-platform';
       case GapiScopes.DRIVE:
         const driveScopeList = [
-            'https://www.googleapis.com/auth/drive',
-            'https://www.googleapis.com/auth/drive.appfolder',
-            'https://www.googleapis.com/auth/drive.install',
+          'https://www.googleapis.com/auth/drive',
+          'https://www.googleapis.com/auth/drive.appfolder',
+          'https://www.googleapis.com/auth/drive.install',
         ];
         return driveScopeList.join(' ');
       case GapiScopes.SIGNIN:
-          return 'profile email';
+        return 'profile email';
       default:
         throw new Error('Unknown gapi scope: ' + scope);
     }
@@ -346,7 +350,7 @@ class ServerAuth implements GapiAuth {
    * with the changes.
    */
   public listenForSignInChanges(signInChangedCallback: (isSignedIn: boolean) => void):
-      Promise<void> {
+    Promise<void> {
     this._signInChangedCallback = signInChangedCallback;
     return Promise.resolve();
   }
@@ -384,8 +388,8 @@ class ServerAuth implements GapiAuth {
   }
 
   public async loadGapiAndScopes(
-      moduleName: string, moduleVersion: string, _scopes: GapiScopes):
-      Promise<void> {
+    moduleName: string, moduleVersion: string, _scopes: GapiScopes):
+    Promise<void> {
     await this.signIn();
     await this._loadGapi();
     await gapi.client.load(moduleName, moduleVersion);
@@ -485,7 +489,7 @@ class ServerAuth implements GapiAuth {
     this.clearRefreshTokenTimeout();
     const timeoutMillis = await this.calculateRefreshTokenTimeoutMillis();
     this._refreshTimeoutId =
-        window.setTimeout(() => this.refreshTokenAndTimeout(), timeoutMillis);
+      window.setTimeout(() => this.refreshTokenAndTimeout(), timeoutMillis);
   }
 
   private clearRefreshTokenTimeout() {
@@ -499,14 +503,14 @@ class ServerAuth implements GapiAuth {
     const now = Date.now();
     const tokenExpirationTime = await this.getAccessTokenExpiry();
     const expirationMillis =
-        tokenExpirationTime ? tokenExpirationTime.getTime() : 0;
+      tokenExpirationTime ? tokenExpirationTime.getTime() : 0;
     const millisToExpiration = expirationMillis - now;
     const minCheckMillis = 60 * 1000;
-        // If expiration is less than this, refresh quickly
+    // If expiration is less than this, refresh quickly
     const minTimeoutMillis = 500;
-        // Wait minimum half second before refresh to avoid spinning in case of bugs
+    // Wait minimum half second before refresh to avoid spinning in case of bugs
     const timeoutMillis =
-        millisToExpiration < minCheckMillis ? minTimeoutMillis : millisToExpiration / 2;
+      millisToExpiration < minCheckMillis ? minTimeoutMillis : millisToExpiration / 2;
     Utils.log.verbose('Seconds until token refresh:', timeoutMillis / 1000);
     return timeoutMillis;
   }
@@ -516,13 +520,13 @@ class ServerAuth implements GapiAuth {
    * times, and it will only load the gapi module once.
    * @returns a promise that completes when the load is done or has failed
    */
-   private _loadGapi(): Promise<void> {
+  private _loadGapi(): Promise<void> {
     // Loads the gapi client library.
     if (!this._loadPromise) {
       this._loadPromise = new Promise((resolve, reject) => {
         return Promise.resolve()
           .then(() => gapi.load('client',
-              () => { Utils.log.verbose('gapi loaded'); resolve(); }))
+            () => { Utils.log.verbose('gapi loaded'); resolve(); }))
           .catch((e: Error) => {
             if (e instanceof MissingClientIdError) {
               Utils.log.error(e.message);
@@ -530,7 +534,7 @@ class ServerAuth implements GapiAuth {
             reject(e);
           });
       })
-      .then(() => this._initClient());
+        .then(() => this._initClient());
     }
     return this._loadPromise;
   }
@@ -543,7 +547,7 @@ class ServerAuth implements GapiAuth {
     Utils.log.verbose('in _initClient');
     const accessToken = await this.getAccessToken();
     if (accessToken) {
-      gapi.client.setToken({access_token: accessToken});
+      gapi.client.setToken({ access_token: accessToken });
     }
     return Promise.resolve();
   }
@@ -552,7 +556,7 @@ class ServerAuth implements GapiAuth {
 /**
  * This module contains a collection of functions that interact with gapi.
  */
-class GapiManager {
+export class GapiManager {
 
   public static drive = class {
 
@@ -571,13 +575,13 @@ class GapiManager {
      * in a subsequent request.
      */
     public static async create(mimeType: string, parentId: string, name: string, content = '')
-        : Promise<gapi.client.drive.File> {
+      : Promise<gapi.client.drive.File> {
       await this._load();
       let createPromise = gapi.client.drive.files.create({
-          mimeType,
-          name,
-          parents: [parentId],
-        })
+        mimeType,
+        name,
+        parents: [parentId],
+      })
         .then((response) => response.result);
 
       if (content) {
@@ -593,9 +597,9 @@ class GapiManager {
      * the given parent directory.
      */
     public static async copy(fileId: string, destinationId?: string)
-        : Promise<gapi.client.drive.File> {
+      : Promise<gapi.client.drive.File> {
       await this._load();
-      return gapi.client.drive.files.copy({fileId})
+      return gapi.client.drive.files.copy({ fileId })
         .then((response) => {
           const newFile = response.result;
           if (destinationId) {
@@ -610,17 +614,17 @@ class GapiManager {
      * Saves the given string content to the specified file.
      */
     public static async patchContent(fileId: string, content: string)
-        : Promise<gapi.client.drive.File> {
+      : Promise<gapi.client.drive.File> {
       await this._load();
       return gapi.client.request({
-          body: content,
-          method: 'PATCH',
-          params: {
-            uploadType: 'media'
-          },
-          path: '/upload/drive/v3/files/' + fileId,
-        })
-      .then((response) => response.result as gapi.client.drive.File);
+        body: content,
+        method: 'PATCH',
+        params: {
+          uploadType: 'media'
+        },
+        path: '/upload/drive/v3/files/' + fileId,
+      })
+        .then((response) => response.result as gapi.client.drive.File);
     }
 
     /**
@@ -650,7 +654,7 @@ class GapiManager {
      */
     public static async deleteFile(fileId: string): Promise<void> {
       await this._load();
-      return gapi.client.drive.files.delete({fileId})
+      return gapi.client.drive.files.delete({ fileId })
         .then((response) => response.result);
     }
 
@@ -658,7 +662,7 @@ class GapiManager {
      * Gets a list of files with the specified query.
      */
     public static async listFiles(fileFields: string[], queryPredicates: string[],
-                                  orderBy?: string[]): Promise<gapi.client.drive.File[]> {
+      orderBy?: string[]): Promise<gapi.client.drive.File[]> {
       await this._load();
       return gapi.client.drive.files.list({
         fields: 'nextPageToken, files(' + fileFields.join(',') + ')',
@@ -667,11 +671,11 @@ class GapiManager {
         pageSize: 1000,
         q: queryPredicates.join(' and '),
       })
-      .then((response: HttpResponse<gapi.client.drive.ListFilesResponse>) => {
-        return response.result.files;
-      }, (response: HttpResponse<{error: Error}>) => {
-        throw response.result.error;
-      });
+        .then((response: HttpResponse<gapi.client.drive.ListFilesResponse>) => {
+          return response.result.files;
+        }, (response: HttpResponse<{ error: Error }>) => {
+          throw response.result.error;
+        });
     }
 
     /**
@@ -687,7 +691,7 @@ class GapiManager {
       }
       return gapi.client.drive.files.get(request)
         .then((response: HttpResponse<gapi.client.drive.File>) => response.result,
-              (response: HttpResponse<{error: Error}>) => {
+        (response: HttpResponse<{ error: Error }>) => {
           throw response.result.error;
         });
     }
@@ -697,22 +701,22 @@ class GapiManager {
      * as a string. Returns an array of the file object and its contents.
      */
     public static async getFileWithContent(id: string)
-        : Promise<[gapi.client.drive.File, string | null]> {
+      : Promise<[gapi.client.drive.File, string | null]> {
       await this._load();
       const accessToken = await GapiManager.auth.getAccessToken();
       const xhrOptions: XhrOptions = {
-        headers: {Authorization: 'Bearer ' + accessToken},
+        headers: { Authorization: 'Bearer ' + accessToken },
         noCache: true,
       };
       const file: gapi.client.drive.File = await ApiManager.sendRequestAsync(
-            'https://www.googleapis.com/drive/v2/files/' + id,
-            xhrOptions,
-            false);
+        'https://www.googleapis.com/drive/v2/files/' + id,
+        xhrOptions,
+        false);
       let content = null;
       if (file.downloadUrl) {
         content = await ApiManager.sendTextRequestAsync(file.downloadUrl,
-                                                        xhrOptions,
-                                                        false);
+          xhrOptions,
+          false);
       }
       return [file, content];
     }
@@ -733,7 +737,7 @@ class GapiManager {
      * Gets the list of BigQuery projects, returns a Promise.
      */
     public static listProjects(pageToken?: string):
-        Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.ListProjectsResponse>> {
+      Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.ListProjectsResponse>> {
       const request = {
         maxResults: 1000,
         pageToken,
@@ -749,7 +753,7 @@ class GapiManager {
      *     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list
      */
     public static listDatasets(projectId: string, filter: string, pageToken?: string):
-        Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.ListDatasetsResponse>> {
+      Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.ListDatasetsResponse>> {
       const request = {
         filter,
         maxResults: 1000,
@@ -765,7 +769,7 @@ class GapiManager {
      * returns a Promise.
      */
     public static listTables(projectId: string, datasetId: string, pageToken?: string):
-        Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.ListTablesResponse>> {
+      Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.ListTablesResponse>> {
       const request = {
         datasetId,
         maxResults: 1000,
@@ -780,7 +784,7 @@ class GapiManager {
      * Fetches table details from BigQuery
      */
     public static getTableDetails(projectId: string, datasetId: string, tableId: string):
-        Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.Table>> {
+      Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.Table>> {
       const request = {
         datasetId,
         projectId,
@@ -794,8 +798,8 @@ class GapiManager {
      * Fetches table rows from BigQuery
      */
     public static getTableRows(projectId: string, datasetId: string,
-                               tableId: string, maxResults: number):
-        Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.ListTabledataResponse>> {
+      tableId: string, maxResults: number):
+      Promise<gapi.client.HttpRequestFulfilled<gapi.client.bigquery.ListTabledataResponse>> {
       const request = {
         datasetId,
         maxResults,
@@ -824,12 +828,12 @@ class GapiManager {
       const allProjects: gapi.client.cloudresourcemanager.Project[] = [];
       do {
         const result: any = await gapi.client.request({
-            method: 'GET',
-            params: {
-              pageToken: nextPageToken,
-            },
-            path: 'https://cloudresourcemanager.googleapis.com/v1/projects',
-          })
+          method: 'GET',
+          params: {
+            pageToken: nextPageToken,
+          },
+          path: 'https://cloudresourcemanager.googleapis.com/v1/projects',
+        })
           .then((response) => response.result);
         allProjects.push(...result.projects);
         nextPageToken = result.nextPageToken;

@@ -1,3 +1,5 @@
+import { XhrOptions, ApiManager, ServiceId } from "../api-manager/api-manager";
+
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *
@@ -23,7 +25,7 @@
 /**
  * Represents a session object as returned from sessions API.
  */
-interface Session {
+export interface Session {
   id: string;
   kernel: {
     id: string;
@@ -37,7 +39,7 @@ interface Session {
 /**
  * Handles different API calls to the backend's session service.
  */
-class SessionManager {
+export class SessionManager {
 
   /**
    * Returns a list of currently running session paths.

@@ -12,6 +12,12 @@
  * the License.
  */
 
+import {DatalabFileType} from '../modules/file-manager/file-manager';
+import {FileManagerFactory} from '../modules/file-manager-factory/file-manager-factory';
+import { MockFileManager, fixture, MockFile, TestUtils } from './test-utils';
+import NotebookPreviewElement from '../components/notebook-preview/notebook-preview';
+import * as sinon from '../node_modules/@types/sinon/index';
+
 window.addEventListener('WebComponentsReady', () => {
   describe('<notebook-preview>', () => {
     const testFixture = fixture('notebook-preview-fixture');

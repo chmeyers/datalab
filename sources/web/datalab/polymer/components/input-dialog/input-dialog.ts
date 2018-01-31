@@ -12,18 +12,22 @@
  * the License.
  */
 
+import {BaseDialogElement, BaseDialogCloseResult, BaseDialogOptions}
+    from '../base-dialog/base-dialog';
+import {Utils} from '../../modules/utils/utils';
+
 /**
  * Dialog close context, includes whether the dialog was confirmed, and any
  * user input given.
  */
-interface InputDialogCloseResult extends BaseDialogCloseResult {
+export interface InputDialogCloseResult extends BaseDialogCloseResult {
   userInput: string;
 }
 
 /**
  * Options for opening an input dialog.
  */
-interface InputDialogOptions extends BaseDialogOptions {
+export interface InputDialogOptions extends BaseDialogOptions {
   inputLabel?: string;
   inputValue?: string;
 }
@@ -35,7 +39,7 @@ interface InputDialogOptions extends BaseDialogOptions {
  * treats this value as a file name with an extension, and it selects all characters
  * up to the last '.' to make it easy to edit file names.
  */
-class InputDialogElement extends BaseDialogElement {
+export class InputDialogElement extends BaseDialogElement {
 
   private static _memoizedTemplate: PolymerTemplate;
 
