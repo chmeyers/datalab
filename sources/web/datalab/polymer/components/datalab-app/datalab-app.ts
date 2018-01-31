@@ -24,38 +24,31 @@
  * All pages referenced by this element should be named following the
  * convention `datalab-element/datalab-element.html`.
  */
-@Polymer.decorators.customElement('datalab-app')
 class DatalabAppElement extends Polymer.Element {
 
   /**
    * The fileId being propagated to and from our pages.
    */
-  @Polymer.decorators.property({type: String})
   public fileId: string;
 
   /**
    * Current displayed page name
    */
-  @Polymer.decorators.property({  // Simple property observer to catch both old and new values
-      observer: DatalabAppElement.prototype._pageChanged, type: String})
-  public page = '';
+  public page: string;
 
   /**
    * Current matching result from the window.location. This gets re-evaluated
    * every time the current page changes, and can be used to get the current
    * active page's name.
    */
-  @Polymer.decorators.property({type: Object})
   public routeData: object;
 
   /**
    * Tail of the parsed route, which contains the file id in its path property.
    */
-  @Polymer.decorators.property({type: Object, notify: true})
   public routeTail: object;
 
-  @Polymer.decorators.property({type: Array})
-  _fileBrowserSources: string[] = [];
+  _fileBrowserSources: string[];
 
   private _boundResizeHandler: EventListenerObject;
 
@@ -76,6 +69,41 @@ class DatalabAppElement extends Polymer.Element {
     };
   }
 
+  static get is() { return 'datalab-app'; }
+
+  static get properties() {
+    return {
+      _fileBrowserSources: {
+        type: Array,
+        value: () => [],
+      },
+      fileId: {
+        observer: '_fileIdChanged',
+        type: String,
+      },
+      page: {
+        observer: '_pageChanged',
+        type: String,
+        value: '',
+      },
+      routeData: Object,
+      routeTail: {
+        notify: true,
+        type: Object,
+      },
+    };
+  }
+
+  static get observers() {
+    return [
+      // We need a complex observer for changes to the routeData object's page
+      // property, and the path property of routeTail, which contains the file
+      // id.
+      '_routePageChanged(routeData.page)',
+      '_routeTailPathChanged(routeTail.path)',
+    ];
+  }
+
   async ready() {
     super.ready();
 
@@ -94,7 +122,6 @@ class DatalabAppElement extends Polymer.Element {
     }
   }
 
-  @Polymer.decorators.observe('fileId')
   _fileIdChanged() {
     this.set('routeTail.path', this.fileId);
   }
@@ -103,12 +130,10 @@ class DatalabAppElement extends Polymer.Element {
    * On changes to the current route, explicitly sets the page property
    * so it can be used by other elements.
    */
-  @Polymer.decorators.observe('routeData.page')
   _routePageChanged(page: string) {
     this.page = page;
   }
 
-  @Polymer.decorators.observe('routeTail.path')
   _routeTailPathChanged() {
     let path = (this.routeTail as any).path as string;
     if (path.startsWith('/')) {
@@ -181,3 +206,5 @@ class DatalabAppElement extends Polymer.Element {
   }
 
 }
+
+customElements.define(DatalabAppElement.is, DatalabAppElement);

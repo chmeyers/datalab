@@ -36,51 +36,74 @@ interface BaseDialogOptions extends Object {
  * (including other custom elements) inside it. This can be best done by stamping the
  * subclass's element template into the #body element of this class.
  */
-@Polymer.decorators.customElement('base-dialog')
 class BaseDialogElement extends Polymer.Element {
 
   /**
    * Title string of the dialog, shows up as <h2>
    */
-  @Polymer.decorators.property({type: String})
-  public title = '';
+  public title: string;
 
   /**
    * Message to show in dialog
    */
-  @Polymer.decorators.property({type: String})
-  public message = '';
+  public message: string;
 
   /**
    * Whether to show a big dialog
    */
-  @Polymer.decorators.property({type: Boolean})
-  public big = false;
+  public big: boolean;
 
   /**
    * String for confirm button
    */
-  @Polymer.decorators.property({type: String})
-  public okLabel = 'Ok';
+  public okLabel: string;
 
   /**
    * String for cancel button
    */
-  @Polymer.decorators.property({type: String})
-  public cancelLabel = 'Cancel';
+  public cancelLabel: string;
 
   /**
-   * Whether this is an error dialog (affects styling)
+   * Whether this dialog is showing an error
    */
-  @Polymer.decorators.property({type: Boolean})
-  public isError = false;
-
-  @Polymer.decorators.property({computed: '_computeSizeCssClass(big)', type: String})
-  _sizeCssClass: string;
+  public isError: boolean;
 
   private _closeCallback: (result: BaseDialogCloseResult) => void;
 
   static get is() { return 'base-dialog'; }
+
+  static get properties() {
+    return {
+      _sizeCssClass: {
+        computed: '_computeSizeCssClass(big)',
+        type: String,
+      },
+      big: {
+        type: Boolean,
+        value: false,
+      },
+      cancelLabel: {
+        type: String,
+        value: 'Cancel'
+      },
+      isError: {
+        type: String,
+        value: false,
+      },
+      message: {
+        type: String,
+        value: '',
+      },
+      okLabel: {
+        type: String,
+        value: 'Ok',
+      },
+      title: {
+        type: String,
+        value: '',
+      },
+    };
+  }
 
   open() {
     // If the closed event fires then the confirm button hasn't been clicked
@@ -144,3 +167,5 @@ class BaseDialogElement extends Polymer.Element {
   }
 
 }
+
+customElements.define(BaseDialogElement.is, BaseDialogElement);

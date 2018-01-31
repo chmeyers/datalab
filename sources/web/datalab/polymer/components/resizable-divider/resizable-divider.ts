@@ -16,32 +16,27 @@
  * Resizable divider element for Datalab.
  * This element is a container for two elements with a vertical resize divider.
  */
-@Polymer.decorators.customElement('resizable-divider')
 class ResizableDividerElement extends Polymer.Element {
 
   /**
    * Minimum pane width in pixels. Defaults to 50(px);
    */
-  @Polymer.decorators.property({type: Number})
-  public minimumWidthPx = 50;
+  public minimumWidthPx: number;
 
   /**
    * Position of the divider in percentage. Defaults to 50(%);
    */
-  @Polymer.decorators.property({type: Number, notify: true})
   public dividerPosition = 50;
 
   /**
    * Set to true to completely disable the right-hand pane and the divider.
    */
-  @Polymer.decorators.property({type: Boolean})
-  public disableRight = false;
+  public disableRight: boolean;
 
   /**
    * Set to true to hide the right-hand pane.
    */
-  @Polymer.decorators.property({type: Boolean})
-  public hideRight = false;
+  public hideRight: boolean;
 
   private _boundMouseDownHandler: EventListenerOrEventListenerObject;
   private _boundMouseupHandler: EventListenerOrEventListenerObject;
@@ -50,6 +45,32 @@ class ResizableDividerElement extends Polymer.Element {
   private _dividerWidth: number;
   private _lastMouseDownPosition: number;
   private _lastMouseUpPosition: number;
+
+  static get is() { return 'resizable-divider'; }
+
+  static get properties() {
+    return {
+      disableRight: {
+        observer: '_disableRightChanged',
+        type: Boolean,
+        value: false,
+      },
+      dividerPosition: {
+        notify: true,
+        observer: '_dividerPositionChanged',
+        type: Number,
+      },
+      hideRight: {
+        observer: '_hideRightChanged',
+        type: Boolean,
+        value: false,
+      },
+      minimumWidthPx: {
+        type: Number,
+        value: 50,
+      },
+    };
+  }
 
   ready() {
     super.ready();
@@ -107,8 +128,10 @@ class ResizableDividerElement extends Polymer.Element {
     // Let observer call _dividerPositionChanged
   }
 
-  @Polymer.decorators.observe('disableRight')
-  _disableRightChanged() {
+  _disableRightChanged(_: boolean, oldValue: boolean) {
+    if (oldValue === undefined) {
+      return;   // Ignore during initialization
+    }
     if (this.disableRight) {
       this.hideRight = true;
       this.dividerPosition = 100;
@@ -119,9 +142,10 @@ class ResizableDividerElement extends Polymer.Element {
   /**
    * Calculate the new divider position after hideRight changes.
    */
-  @Polymer.decorators.observe('hideRight')
-  _hideRightChanged() {
-    if (this.hideRight) {
+  _hideRightChanged(_: boolean, oldValue: boolean) {
+    if (oldValue === undefined) {
+      return;   // Leave divider position unchanged on startup
+    } else if (this.hideRight) {
       this.dividerPosition = 100;
     } else {
       // Make the right pane visible
@@ -140,7 +164,6 @@ class ResizableDividerElement extends Polymer.Element {
   /**
    * Calculates and sets the new widths of the two panes after the divider moved.
    */
-  @Polymer.decorators.observe('dividerPosition')
   _dividerPositionChanged() {
     const container = this.$.container as HTMLDivElement;
     const containerRect = container.getBoundingClientRect();
@@ -177,3 +200,5 @@ class ResizableDividerElement extends Polymer.Element {
   }
 
 }
+
+customElements.define(ResizableDividerElement.is, ResizableDividerElement);

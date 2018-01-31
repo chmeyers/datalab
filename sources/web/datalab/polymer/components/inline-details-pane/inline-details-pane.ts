@@ -15,32 +15,48 @@
 /**
  * Inline details pane element for Datalab.
  */
-@Polymer.decorators.customElement('inline-details-pane')
 class InlineDetailsPaneElement extends Polymer.Element {
 
   /**
    * Currently displayed inline-details pane name.
    */
-  @Polymer.decorators.property({type: String})
-  public details = '';
+  public details: string;
 
   /**
    * File whose details to show.
    */
-  @Polymer.decorators.property({type: Object})
   public file: DatalabFile;
 
   /**
    * Whether the pane is actively tracking selected items. This is used to avoid fetching the
    * selected file's data if the pane is closed by the host element.
    */
-  @Polymer.decorators.property({type: Boolean})
-  public active = true;
+  public active: boolean;
+
+  static get is() { return 'inline-details-pane'; }
+
+  static get properties() {
+    return {
+      active: {
+        observer: '_reloadInlineDetails',
+        type: Boolean,
+        value: true,
+      },
+      details: {
+        type: String,
+        value: '',
+      },
+      file: {
+        observer: '_reloadInlineDetails',
+        type: Object,
+        value: {},
+      },
+    };
+  }
 
   /**
    * Shows inline details of the selected file for known file types.
    */
-  @Polymer.decorators.observe(['active', 'file'])
   _reloadInlineDetails() {
     if (!this.file || !this.active) {
       return;
@@ -64,3 +80,5 @@ class InlineDetailsPaneElement extends Polymer.Element {
     }
   }
 }
+
+customElements.define(InlineDetailsPaneElement.is, InlineDetailsPaneElement);

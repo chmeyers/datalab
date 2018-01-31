@@ -18,14 +18,19 @@
  * contains the Datalab logo, plus a few icons that are meant to persist
  * on all pages. It also contains dialogs that are opened by those buttons
  */
-@Polymer.decorators.customElement('datalab-toolbar')
 class ToolbarElement extends Polymer.Element {
 
-  @Polymer.decorators.property({type: Boolean})
   private _timeoutEnabled: boolean;
-
-  @Polymer.decorators.property({type: Boolean})
   private _userSettingsEnabled: boolean;
+
+  static get is() { return 'datalab-toolbar'; }
+
+  static get properties() {
+    return {
+      _timeoutEnabled: Boolean,
+      _userSettingsEnabled: Boolean,
+    };
+  }
 
   async ready() {
     super.ready();
@@ -77,3 +82,5 @@ class ToolbarElement extends Polymer.Element {
     }
   }
 }
+
+customElements.define(ToolbarElement.is, ToolbarElement);

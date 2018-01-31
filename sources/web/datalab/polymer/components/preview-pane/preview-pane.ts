@@ -17,34 +17,50 @@
  * This element is designed to be displayed in a side bar that displays more
  * information about a selected file.
  */
-@Polymer.decorators.customElement('preview-pane')
 class PreviewPaneElement extends Polymer.Element {
 
   /**
    * Currently displayed preview pane.
    */
-  @Polymer.decorators.property({type: String})
-  public preview = '';
+  public preview: string;
 
   /**
    * File whose preview to show.
    */
-  @Polymer.decorators.property({type: Object})
   public file: DatalabFile;
 
   /**
    * Whether the pane is actively tracking selected items. This is used to avoid fetching the
    * selected file's data if the pane is closed by the host element.
    */
-  @Polymer.decorators.property({type: Boolean})
-  public active = true;
+  public active: boolean;
+
+  static get is() { return 'preview-pane'; }
+
+  static get properties() {
+    return {
+      active: {
+        observer: '_reloadPreview',
+        type: Boolean,
+        value: true,
+      },
+      file: {
+        observer: '_reloadPreview',
+        type: Object,
+        value: {},
+      },
+      preview: {
+        type: String,
+        value: '',
+      },
+    };
+  }
 
   /**
    * Shows a preview of the selected file for known file types.
    *
    * TODO: Consider adding a spinning animation while this data loads.
    */
-  @Polymer.decorators.observe(['active', 'file'])
   _reloadPreview() {
     if (!this.file || !this.active) {
       return;
@@ -59,3 +75,5 @@ class PreviewPaneElement extends Polymer.Element {
     }
   }
 }
+
+customElements.define(PreviewPaneElement.is, PreviewPaneElement);

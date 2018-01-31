@@ -10,7 +10,8 @@
     "transpile": "tsc",
     "prebuild": "npm install && bower --allow-root install",
     "build": "npm run transpile && polymer build",
-    "test": "tsc && polymer test"
+    "test": "tsc && polymer test",
+    "watch": "webpack -w"
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",

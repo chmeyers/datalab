@@ -12,14 +12,23 @@
  * the License.
  */
 
-@Polymer.decorators.customElement('datalab-info')
 class InfoElement extends Polymer.Element {
 
   /**
    * The current Datalab version string.
    */
-  @Polymer.decorators.property({type: String})
-  public version = '';
+  public version: string;
+
+  static get is() { return 'datalab-info'; }
+
+  static get properties() {
+    return {
+      version: {
+        type: String,
+        value: '',
+      },
+    };
+  }
 
   ready() {
     super.ready();
@@ -29,3 +38,5 @@ class InfoElement extends Polymer.Element {
   }
 
 }
+
+customElements.define(InfoElement.is, InfoElement);

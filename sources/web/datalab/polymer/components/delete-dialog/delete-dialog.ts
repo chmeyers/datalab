@@ -24,7 +24,6 @@ interface DeleteDialogOptions extends BaseDialogOptions {
  * This element is a modal dialog that presents the user with list of items to
  * be deleted.
  */
-@Polymer.decorators.customElement('delete-dialog')
 class DeleteDialogElement extends BaseDialogElement {
 
   private static _memoizedTemplate: PolymerTemplate;
@@ -32,16 +31,21 @@ class DeleteDialogElement extends BaseDialogElement {
   /**
    * List of items to be deleted
    */
-  @Polymer.decorators.property({type: Array})
   public deletedList: ItemListRow[];
 
   /**
    * Word to use after the count of items, properly pluralized
    */
-  @Polymer.decorators.property({type: String})
   public itemsLabel: string;
 
   static get is() { return 'delete-dialog'; }
+
+  static get properties() {
+    return Object.assign(super.properties, {
+      deletedList: Array,
+      itemsLabel: String,
+    });
+  }
 
   open() {
     super.open();
@@ -70,3 +74,5 @@ class DeleteDialogElement extends BaseDialogElement {
     return this._memoizedTemplate;
   }
 }
+
+customElements.define(DeleteDialogElement.is, DeleteDialogElement);

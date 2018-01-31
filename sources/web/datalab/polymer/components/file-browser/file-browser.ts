@@ -31,7 +31,6 @@
  * and no selection. It also doesn't do anything when a file is double clicked.
  * This is meant to be used for browsing only, such as the case for picking files or directories.
  */
-@Polymer.decorators.customElement('file-browser')
 class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
 
   /**
@@ -42,109 +41,161 @@ class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
   /**
    * The current listing directory
    */
-  @Polymer.decorators.property({type: Object})
   public currentFile: DatalabFile;
 
   /**
    * The fileId of currentFile as a string
    */
-  @Polymer.decorators.property({notify: true, type: String})
   public fileId: string;
 
   /**
    * The type of FileManager we want to use for this file-browser.
    */
-  @Polymer.decorators.property({type: String})
-  public fileManagerType = '';   // default is in code below
+  public fileManagerType: string;   // default is in code below
 
   /**
    * List of supported file manager types. If this is not specified, it will be
    * read from the app settings.
    */
-  @Polymer.decorators.property({type: Array})
-  public fileManagerTypeList: FileManagerType[] = [];
+  public fileManagerTypeList: FileManagerType[];
 
   /**
    * Toolbar display mode.
    * Possible values: 'none', 'data', 'files'.
    */
-  @Polymer.decorators.property({type: String})
-  public toolbarMode = 'files';
+  public toolbarMode: string;
 
   /**
    * The currently selected file if exactly one is selected, or null if none is.
    */
-  @Polymer.decorators.property({type: Object})
-  public selectedFile: DatalabFile | null = null;
+  public selectedFile: DatalabFile | null;
 
   /*
    * Smaller version of this element to be used as a flyout file picker.
    */
-  @Polymer.decorators.property({type: Boolean})
-  public small = false;
+  public small: boolean;
 
   /**
    * Number of leading breadcrumbs to trim.
    */
-  @Polymer.decorators.property({type: Number})
-  public nLeadingBreadcrumbsToTrim = 0;
+  public nLeadingBreadcrumbsToTrim: number;
 
-  @Polymer.decorators.property({type: Boolean})
-  _busy = false; // Indicates an async file operation is taking place
-
-  @Polymer.decorators.property({type: Boolean})
+  _busy: boolean; // Indicates an async file operation is taking place
   _canOpenInNotebook = false;
-
-  @Polymer.decorators.property({type: Boolean})
   _canPreview = false;
-
-  @Polymer.decorators.property({type: Boolean})
-  _fetching = false; // Indicates the file list is being fetched and updated
+  _fetching: boolean; // Indicates the file list is being fetched and updated
   _fileManagerDisplayName: string;
   _fileManagerDisplayIcon: string;
+  _selectedFilesLength: number;
 
-  @Polymer.decorators.property({type: Number})
-  _selectedFilesLength = 0;
-
-  _addToolbarCollapseThreshold = 900;
-
-  @Polymer.decorators.property({type: Number})
-  _dividerPosition = 70;
-
-  _previewPaneCollapseThreshold = 600;
-
-  @Polymer.decorators.property({type: Array})
-  _fileList: DatalabFile[] = [];
-
-  @Polymer.decorators.property({
-      computed: '_getPreviewPaneEnabled(small, _isPreviewPaneToggledOn)', type: Boolean})
-  _isPreviewPaneEnabled: boolean;
-
-  @Polymer.decorators.property({type: Boolean})
-  _isPreviewPaneToggledOn = true;
-
-  @Polymer.decorators.property({
-      computed: '_computeIsToolbarHidden(small, toolbarMode)', type: Boolean})
-  _isToolbarHidden: boolean;
-
-  @Polymer.decorators.property({type: Array})
-  _pathFileHierarchy: DatalabFile[] = [];
-
-  @Polymer.decorators.property({type: Number})
-  _pathFileHierarchyIndex = -1;
-
-  @Polymer.decorators.property({
-      computed: '_computeShowProgressBar(_fetching, busy)', type: Boolean})
-  _showProgressBar = false;
-
+  private _addToolbarCollapseThreshold = 900;
+  private _dividerPosition: number;
+  private _previewPaneCollapseThreshold = 600;
+  private _fileList: DatalabFile[];
   private _fileListRefreshInterval = 60 * 1000;
   private _fileListRefreshIntervalHandle = 0;
   private _fileManager: FileManager;
   private _hasMultipleFileSources: boolean;
   private _ignoreFileIdChange = false;
   private _inlineDetailsOpenInNotebook: () => void | null;
+  private _isPreviewPaneToggledOn: boolean;
+  private _pathFileHierarchy: DatalabFile[];
+  private _pathFileHierarchyIndex: number;
   private _updateToolbarCollapseThreshold = 720;
   private _uploadFileSizeWarningLimit = 25 * 1024 * 1024;
+
+  static get is() { return 'file-browser'; }
+
+  static get properties() {
+    return {
+      _busy: {
+        type: Boolean,
+        value: false,
+      },
+      _canOpenInNotebook: {
+        type: Boolean,
+      },
+      _canPreview: {
+        type: Boolean,
+        value: false,
+      },
+      _dividerPosition: {
+        observer: '_dividerPositionChanged',
+        type: Number,
+        value: 70,
+      },
+      _fetching: {
+        type: Boolean,
+        value: false,
+      },
+      _fileList: {
+        type: Array,
+        value: () => [],
+      },
+      _isPreviewPaneEnabled: {
+        computed: '_getPreviewPaneEnabled(small, _isPreviewPaneToggledOn)',
+        type: Boolean,
+      },
+      _isPreviewPaneToggledOn: {
+        type: Boolean,
+        value: true,
+      },
+      _isToolbarHidden: {
+        computed: '_computeIsToolbarHidden(small, toolbarMode)',
+        type: Boolean,
+      },
+      _pathFileHierarchy: {
+        type: Array,
+        value: () => [],
+      },
+      _pathFileHierarchyIndex: {
+        observer: '_pathFileHierarchyIndexChanged',
+        type: Number,
+        value: -1,
+      },
+      _selectedFilesLength: {
+        type: Number,
+        value: 0,
+      },
+      _showProgressBar: {
+        computed: '_computeShowProgressBar(_fetching, _busy)'
+      },
+      currentFile: {
+        type: Object,
+        value: null,
+      },
+      fileId: {
+        notify: true,
+        observer: '_fileIdChanged',
+        type: String,
+      },
+      fileManagerType: {
+        type: String,
+        value: '',
+      },
+      fileManagerTypeList: {
+        observer: '_fileManagerTypeListChanged',
+        type: Array,
+        value: () => [],
+      },
+      nLeadingBreadcrumbsToTrim: {
+        type: Number,
+        value: 0,
+      },
+      selectedFile: {
+        type: Object,
+        value: null,
+      },
+      small: {
+        type: Boolean,
+        value: false,
+      },
+      toolbarMode: {
+        type: String,
+        value: 'files',
+      },
+    };
+  }
 
   /**
    * Called when the element's local DOM is ready and initialized.
@@ -277,7 +328,6 @@ class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
     return '';
   }
 
-  @Polymer.decorators.observe('fileId')
   async _fileIdChanged() {
     if (this._ignoreFileIdChange) {
       return;
@@ -296,7 +346,6 @@ class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
     this._loadStartupPath(fileId);
   }
 
-  @Polymer.decorators.observe('fileManagerTypeList')
   async _fileManagerTypeListChanged() {
     if (!this.fileManagerTypeList) {
       const settings = await SettingsManager.getAppSettingsAsync();
@@ -515,7 +564,6 @@ class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
    * Maintains the enabled/disabled state of the navigation buttons according to
    * the current history index value.
    */
-  @Polymer.decorators.observe('_pathFileHierarchyIndex')
   _pathFileHierarchyIndexChanged() {
     this.$.backNav.disabled = this._pathFileHierarchyIndex === 0;
     this.$.forwardNav.disabled = this._pathFileHierarchyIndex === this._pathFileHierarchy.length - 1;
@@ -871,7 +919,6 @@ class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
    * Gets called when the divider position changes, to update ToggledOn
    * if the user moves the position to or from 100%.
    */
-  @Polymer.decorators.observe('_dividerPosition')
   _dividerPositionChanged() {
     if (this._dividerPosition === 100 && this._isPreviewPaneToggledOn) {
       this._isPreviewPaneToggledOn = false;
@@ -1120,3 +1167,5 @@ class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
   }
 
 }
+
+customElements.define(FileBrowserElement.is, FileBrowserElement);

@@ -44,10 +44,11 @@ class NotificationEvent extends Event {
  * will not disappear automatically, and it will wait on another 'notification'
  * event that explicitly dismisses it.
  */
-@Polymer.decorators.customElement('datalab-notification')
 class NotificationElement extends Polymer.Element {
 
   private _nonstickyDuration = 3 * 1000;
+
+  static get is() { return 'datalab-notification'; }
 
   ready() {
     super.ready();
@@ -87,3 +88,5 @@ class NotificationElement extends Polymer.Element {
   }
 
 }
+
+customElements.define(NotificationElement.is, NotificationElement);

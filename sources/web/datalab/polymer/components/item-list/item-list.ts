@@ -153,70 +153,102 @@ class ItemListRow {
  * If the "disable-selection" attribute is specified, the checkboxes are
  * hidden, and clicking items does not select them.
  */
-@Polymer.decorators.customElement('item-list')
 class ItemListElement extends Polymer.Element {
 
   /**
    * List of data rows, each implementing the row interface
    */
-  @Polymer.decorators.property({type: Array})
-  public rows: ItemListRow[] = [];
+  public rows: ItemListRow[];
 
   /**
    * List of string data columns names
    */
-  @Polymer.decorators.property({type: Array})
-  public columns: Column[] = [];
+  public columns: Column[];
 
   /**
    * Whether to hide the header row
    */
-  @Polymer.decorators.property({type: Boolean})
-  public hideHeader = false;
+  public hideHeader: boolean;
 
   /**
    * Whether to disable item selection
    */
-  @Polymer.decorators.property({type: Boolean})
-  public disableSelection = false;
+  public disableSelection: boolean;
 
   /**
    * Whether to disable multi-selection
    */
-  @Polymer.decorators.property({type: Boolean})
-  public noMultiselect = false;
+  public noMultiselect: boolean;
 
   /**
    * The list of currently selected indices
    */
-  @Polymer.decorators.property({
-      computed: '_computeSelectedIndices(rows.*)', notify: true, type: Array})
-  public selectedIndices: number[] = [];
+  public selectedIndices: number[];
 
   /**
    * Display mode for inline details
    */
-  @Polymer.decorators.property({type: Object})
-  public inlineDetailsMode = InlineDetailsDisplayMode.NONE;
-
-  @Polymer.decorators.property({type: Boolean})
-  _showFilterBox = false;
-
-  @Polymer.decorators.property({
-      computed: '_computeIsAllSelected(selectedIndices)', type: Boolean})
-  _isAllSelected: boolean;
-
-  @Polymer.decorators.property({
-      computed: '_computeHideCheckboxes(disableSelection, noMultiselect)', type: Boolean})
-  _hideCheckboxes: boolean;
+  public inlineDetailsMode: InlineDetailsDisplayMode;
 
   _filterString: string;
+  _showFilterBox: boolean;
 
   private _currentSort = {
     asc: true,   // ascending or descending
     column: -1,  // index of current sort column
   };
   private _lastSelectedIndex = -1;
+
+  static get is() { return 'item-list'; }
+
+  static get properties() {
+    return {
+      _hideCheckboxes: {
+        computed: '_computeHideCheckboxes(disableSelection, noMultiselect)',
+        type: Boolean,
+      },
+      _isAllSelected: {
+        computed: '_computeIsAllSelected(selectedIndices)',
+        type: Boolean,
+      },
+      _showFilterBox: {
+        type: Boolean,
+        value: false,
+      },
+      columns: {
+        observer: '_updateSortIcons',
+        type: Array,
+        value: () => [],
+      },
+      disableSelection: {
+        type: Boolean,
+        value: false,
+      },
+      hideHeader: {
+        type: Boolean,
+        value: false,
+      },
+      inlineDetailsMode: {
+        type: Number,
+        value: InlineDetailsDisplayMode.NONE,
+      },
+      noMultiselect: {
+        type: Boolean,
+        value: false,
+      },
+      rows: {
+        observer: '_updateSortIcons',
+        type: Array,
+        value: () => [],
+      },
+      selectedIndices: {
+        computed: '_computeSelectedIndices(rows.*)',
+        notify: true,
+        type: Array,
+        value: () => [],
+      },
+    };
+  }
 
   ready() {
     super.ready();
@@ -294,7 +326,6 @@ class ItemListElement extends Polymer.Element {
     this._updateSortIcons();
   }
 
-  @Polymer.decorators.observe(['rows', 'columns'])
   _updateSortIcons() {
     // Make sure all elements have rendered.
     Polymer.dom.flush();
@@ -564,3 +595,5 @@ class ItemListElement extends Polymer.Element {
   }
 
 }
+
+customElements.define(ItemListElement.is, ItemListElement);

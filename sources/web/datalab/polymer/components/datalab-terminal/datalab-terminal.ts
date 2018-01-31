@@ -34,19 +34,25 @@ declare class Terminal {
  * If the user closes the terminal session, either by typing 'exit' or ctrl+d, this
  * element will automatically reset the terminal.
  */
-@Polymer.decorators.customElement('datalab-terminal')
 class TerminalElement extends Polymer.Element implements DatalabPageElement {
 
   public focusHandler = null;
   public blurHandler = null;
 
-  @Polymer.decorators.property({type: Boolean})
-  _busy = false;
+  _busy: boolean;
 
   private _xterm: Terminal;
   private _wsConnection: WebSocket;
   private _charHeight: number;
   private _charWidth: number;
+
+  static get is() { return 'datalab-terminal'; }
+
+  static get properties() {
+    return {
+      _busy: Boolean,
+    };
+  }
 
   async ready() {
     super.ready();
@@ -139,3 +145,5 @@ class TerminalElement extends Polymer.Element implements DatalabPageElement {
     }
   }
 }
+
+customElements.define(TerminalElement.is, TerminalElement);

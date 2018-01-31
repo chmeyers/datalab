@@ -40,7 +40,6 @@ interface DirectoryPickerDialogOptions extends BaseDialogOptions {
  * without the ability to select files.
  * The dialog returns the user selected directory path, if any.
  */
-@Polymer.decorators.customElement('directory-picker-dialog')
 class DirectoryPickerDialogElement extends BaseDialogElement {
 
   private static _memoizedTemplate: PolymerTemplate;
@@ -48,24 +47,38 @@ class DirectoryPickerDialogElement extends BaseDialogElement {
   /**
    * Initial value of fileId.
    */
-  @Polymer.decorators.property({type: String})
   public fileId: string;
 
   /**
    * Initial value of input box.
    */
-  @Polymer.decorators.property({type: String})
-  public fileName = '';
+  public fileName: string;
 
   /**
    * Whether to include an input box under the file picker.
    */
-  @Polymer.decorators.property({type: Boolean})
-  public withFileName = false;
+  public withFileName: boolean;
 
   public readyPromise: Promise<any>;
 
   static get is() { return 'directory-picker-dialog'; }
+
+  static get properties() {
+    return {
+      ...super.properties,
+      fileId: {
+        type: DatalabFileId,
+      },
+      fileName: {
+        type: String,
+        value: '',
+      },
+      withFileName: {
+        type: Boolean,
+        value: false,
+      },
+    };
+  }
 
   /**
    * This template is calculated once in run time based on the template of  the
@@ -111,3 +124,5 @@ class DirectoryPickerDialogElement extends BaseDialogElement {
   }
 
 }
+
+customElements.define(DirectoryPickerDialogElement.is, DirectoryPickerDialogElement);
