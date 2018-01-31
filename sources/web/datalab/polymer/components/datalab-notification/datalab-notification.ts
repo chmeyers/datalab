@@ -19,7 +19,7 @@
  * @param show whether the notification toast should be shown or hidden. Default true.
  * @param sticky whether the notification should stick around until dismissed. Default false.
  */
-class NotificationEvent extends CustomEvent {
+class NotificationEvent extends Event {
   constructor(message = '', show = true, sticky = false) {
 
     const eventInit = {
@@ -56,7 +56,8 @@ class NotificationElement extends Polymer.Element {
     const parent = this.parentNode;
     if (parent) {
       // Put the event listener on the parent element
-      (parent as ShadowRoot).host.addEventListener('notification', (e: NotificationEvent) => {
+      (parent as ShadowRoot).host.addEventListener('notification', (ev: NotificationEvent) => {
+        const e = ev as CustomEvent;
         if (e.detail.show) {
           this.show(e.detail.message, e.detail.sticky);
         } else {

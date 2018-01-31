@@ -26,3 +26,5 @@ experimental
 polymer_bundled
 polymer_unbundled
 sources/web/datalab/polymer/**/*.js
+sources/web/datalab/polymer/dist
+!webpack.config.js

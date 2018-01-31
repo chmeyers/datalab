@@ -91,18 +91,18 @@ class BreadCrumbsElement extends Polymer.Element {
   _crumbClicked(e: MouseEvent) {
     const index = this.$.breadcrumbsTemplate.indexForElement(e.target);
     if (index !== null) {
-      const ev = new ItemClickEvent('crumbClicked', { detail: {index} });
+      const ev = new CustomEvent('crumbClicked', { detail: {index} });
       this.dispatchEvent(ev);
     }
   }
 
   _ellipsisClicked() {
-    const ev = new ItemClickEvent('crumbClicked', { detail: {index: this.lastVisibleIndex - 1} });
+    const ev = new CustomEvent('crumbClicked', { detail: {index: this.lastVisibleIndex - 1} });
     this.dispatchEvent(ev);
   }
 
   _rootClicked() {
-    this.dispatchEvent(new ItemClickEvent('rootClicked'));
+    this.dispatchEvent(new CustomEvent('rootClicked'));
   }
 
 }

@@ -138,15 +138,6 @@ class ItemListRow {
 }
 
 /**
- * CustomEvent that gets dispatched when an item is clicked or double clicked
- */
-class ItemClickEvent extends CustomEvent {
-  detail: {
-    index: number;
-  };
-}
-
-/**
  * Multi-column list element.
  * This element takes a list of column names, and a list of row objects,
  * each containing values for each of the columns, an icon name, and a selected
@@ -557,7 +548,7 @@ class ItemListElement extends Polymer.Element {
    */
   _rowDoubleClicked(e: MouseEvent) {
     const realIndex = this.$.list.modelForElement(e.target).itemsIndex;
-    const ev = new ItemClickEvent('itemDoubleClick', { detail: {index: realIndex} });
+    const ev = new CustomEvent('itemDoubleClick', { detail: {index: realIndex} });
     this.dispatchEvent(ev);
   }
 

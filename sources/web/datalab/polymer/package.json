@@ -5,6 +5,7 @@
     "test": "test"
   },
   "scripts": {
+    "postinstall": "bower i",
     "pretranspile": "tslint *.ts components/**/*.ts modules/**/*.ts",
     "transpile": "tsc",
     "prebuild": "npm install && bower --allow-root install",
@@ -20,8 +21,13 @@
     "@types/sinon": "^2.3.7",
     "@types/socket.io-client": "^1.4.30",
     "bower": "^1.8.2",
+    "clean-webpack-plugin": "^0.1.16",
+    "copy-webpack-plugin": "^4.0.1",
     "polymer-cli": "^1.5.7",
+    "ts-loader": "^2.3.4",
     "tslint": "^5.7.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "wc-loader": "^1.1.12",
+    "webpack": "^3.0.0"
   }
 }

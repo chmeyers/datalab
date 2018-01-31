@@ -175,7 +175,7 @@ class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
     const filesElement = this.$.files as ItemListElement;
     filesElement.inlineDetailsMode = InlineDetailsDisplayMode.SINGLE_SELECT;
 
-    this.$.breadCrumbs.addEventListener('crumbClicked', (e: ItemClickEvent) => {
+    this.$.breadCrumbs.addEventListener('crumbClicked', (e: CustomEvent) => {
       // Take the default root file into account, increment clicked index by one.
       // If there are any leading breadcrumbs we trimmed, add that number back.
       this._pathFileHierarchyIndex = e.detail.index + 1 + this.nLeadingBreadcrumbsToTrim;
@@ -442,7 +442,7 @@ class FileBrowserElement extends Polymer.Element implements DatalabPageElement {
    * If this element is in "small" mode, double clicking a file does not have
    * an effect, a directory will still navigate.
    */
-  async _handleDoubleClicked(e: ItemClickEvent) {
+  async _handleDoubleClicked(e: CustomEvent) {
     const clickedItem = this._fileList[e.detail.index];
     if (this.small && clickedItem.type !== DatalabFileType.DIRECTORY) {
       return;
