@@ -28,6 +28,7 @@ import * as CodeMirror from '../../node_modules/@types/codemirror/index';
 import { Utils } from '../../modules/utils/utils';
 import { SettingsManager } from '../../modules/settings-manager/settings-manager';
 import { FileManagerType } from '../../modules/file-manager-factory/file-manager-type';
+import NotificationEvent from '../datalab-notification/datalab-notification';
 
 /**
  * Editor element for Datalab.

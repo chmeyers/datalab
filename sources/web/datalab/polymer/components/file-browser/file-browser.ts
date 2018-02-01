@@ -12,6 +12,7 @@ import { SettingsManager } from "../../modules/settings-manager/settings-manager
 import { InlineDetailsPaneElement } from "../inline-details-pane/inline-details-pane";
 import { FileManager } from "../../modules/file-manager/file-manager";
 import { FileManagerType } from "../../modules/file-manager-factory/file-manager-type";
+import NotificationEvent from "../datalab-notification/datalab-notification";
 
 /*
  * Copyright 2017 Google Inc. All rights reserved.
