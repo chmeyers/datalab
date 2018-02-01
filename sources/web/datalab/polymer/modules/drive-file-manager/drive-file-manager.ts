@@ -19,7 +19,7 @@
 
 import { DatalabFile, DatalabFileId, DatalabFileType, NotebookContent }
   from '../file-manager/datalab-file';
-import { FileManagerType } from '../file-manager-factory/file-manager-factory';
+import { FileManagerType } from '../file-manager-factory/file-manager-type';
 import { GapiManager } from '../gapi-manager/gapi-manager';
 import { Utils } from '../utils/utils';
 import { Column, ColumnTypeName } from '../../components/item-list/item-list';

@@ -1,5 +1,5 @@
 import { DatalabFileId, DatalabFile, DatalabFileType } from "../modules/file-manager/datalab-file";
-import { FileManagerType, FileManagerFactory } from "../modules/file-manager-factory/file-manager-factory";
+import { FileManagerFactory } from "../modules/file-manager-factory/file-manager-factory";
 import { MockFileManager, MockFile, fixture, TestUtils } from "./test-utils";
 import { Utils } from "../modules/utils/utils";
 import { InputDialogElement } from "../components/input-dialog/input-dialog";
@@ -10,6 +10,7 @@ import { SettingsManager } from "../modules/settings-manager/settings-manager";
 import { ApiManager } from "../modules/api-manager/api-manager";
 import { ItemListElement, ItemListRow } from "../components/item-list/item-list";
 import { SessionManager } from "../modules/session-manager/session-manager";
+import { FileManagerType } from "../modules/file-manager-factory/file-manager-type";
 
 /*
  * Copyright 2017 Google Inc. All rights reserved.

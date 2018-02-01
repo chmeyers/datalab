@@ -15,7 +15,7 @@
 import { DatalabFileId, DatalabFile, DatalabFileType }
   from '../../modules/file-manager/datalab-file';
 import { FileManager } from '../../modules/file-manager/file-manager';
-import { FileManagerFactory, FileManagerType }
+import { FileManagerFactory }
   from '../../modules/file-manager-factory/file-manager-factory';
 import {
   DirectoryPickerDialogElement, DirectoryPickerDialogOptions,
@@ -27,6 +27,7 @@ import { InputDialogCloseResult, InputDialogElement, InputDialogOptions }
 import * as CodeMirror from '../../node_modules/@types/codemirror/index';
 import { Utils } from '../../modules/utils/utils';
 import { SettingsManager } from '../../modules/settings-manager/settings-manager';
+import { FileManagerType } from '../../modules/file-manager-factory/file-manager-type';
 
 /**
  * Editor element for Datalab.

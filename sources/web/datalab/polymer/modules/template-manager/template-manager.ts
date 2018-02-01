@@ -12,10 +12,11 @@
  * the License.
  */
 
-import {DatalabFileId, NotebookContent, NotebookCell} from '../file-manager/datalab-file';
-import {FileManagerType, FileManagerFactory} from '../file-manager-factory/file-manager-factory';
-import {Utils} from '../utils/utils';
+import { DatalabFileId, NotebookContent, NotebookCell } from '../file-manager/datalab-file';
+import { FileManagerFactory } from '../file-manager-factory/file-manager-factory';
+import { Utils } from '../utils/utils';
 import { ApiManager } from '../api-manager/api-manager';
+import { FileManagerType } from '../file-manager-factory/file-manager-type';
 
 // Parameter placeholders are of the form #${foo} for key foo, which will be
 // replaced by the value of foo passed in to the NotebookTemplate constructor.
@@ -90,14 +91,14 @@ class NotebookTemplate {
       const oldCellSource = cell.source;
       this.parameters.forEach((parameter: TemplateParameter) => {
         const placeholder =
-            PLACEHOLDER_PREFIX + parameter.name + PLACEHOLDER_POSTFIX;
+          PLACEHOLDER_PREFIX + parameter.name + PLACEHOLDER_POSTFIX;
         const escapedPlaceholder = NotebookTemplate._regexEscapeAll(placeholder);
         const regex = new RegExp(escapedPlaceholder);
         const value = (parameter.value || '').toString();
         cell.source = cell.source.replace(regex, value);
       });
       if (cell.source !== oldCellSource) {
-        cellChangeCount ++;
+        cellChangeCount++;
       }
     });
     return cellChangeCount;
@@ -109,7 +110,7 @@ class NotebookTemplate {
    */
   public addParameterCell(notebook: NotebookContent) {
     const definitionLines = this.parameters.map((parameter) =>
-        parameter.name + ' = ' + JSON.stringify(parameter.value));
+      parameter.name + ' = ' + JSON.stringify(parameter.value));
     const header = '# Auto-generated parameter definitions';
     const cellText = header + '\n' + definitionLines.join('\n');
     const newCell: NotebookCell = {
@@ -128,7 +129,7 @@ class NotebookTemplate {
  */
 class BigQueryTableOverviewTemplate extends NotebookTemplate {
   constructor(dict: { [key: string]: any }) {
-    const parameters = Object.keys(dict).map((k) => ({name: k, value: dict[k]}));
+    const parameters = Object.keys(dict).map((k) => ({ name: k, value: dict[k] }));
 
     // Specify the default location of the template.
     const defaultTemplateLocation = 'static/templates/BigQueryTableOverview.ipynb';
@@ -138,7 +139,7 @@ class BigQueryTableOverviewTemplate extends NotebookTemplate {
     // 'jupyter:datalab/templates/BigQueryTableOverview.ipynb';
     const windowDatalab = window.datalab || {};
     const templateLocation =
-        windowDatalab.tableSchemaTemplateFileId || defaultTemplateLocation;
+      windowDatalab.tableSchemaTemplateFileId || defaultTemplateLocation;
     const templateId = DatalabFileId.fromString(templateLocation);
     super(templateId, parameters);
   }
@@ -149,7 +150,7 @@ class BigQueryTableOverviewTemplate extends NotebookTemplate {
  */
 class NewNotebookTemplate extends NotebookTemplate {
   constructor(dict: { [key: string]: any }) {
-    const parameters = Object.keys(dict).map((k) => ({name: k, value: dict[k]}));
+    const parameters = Object.keys(dict).map((k) => ({ name: k, value: dict[k] }));
 
     const templateId = DatalabFileId.fromString('static/templates/NewNotebookTemplate.ipynb');
     super(templateId, parameters);
@@ -168,7 +169,7 @@ class NewNotebookTemplate extends NotebookTemplate {
 export class TemplateManager extends Polymer.Element {
 
   public static async newNotebookFromTemplate(name: string, params: {}, kernel?: string) {
-    let templateClassName: new ({}) => NotebookTemplate;
+    let templateClassName: new ({ }) => NotebookTemplate;
     switch (name) {
       case TEMPLATE_NAME.bigqueryOverview:
         templateClassName = BigQueryTableOverviewTemplate; break;
@@ -198,7 +199,7 @@ export class TemplateManager extends Polymer.Element {
     if (fileId.source === FileManagerType.STATIC) {
       const resolvedUrl = Utils.resolveUrlToDatalabApp('../../' + fileId.path);
       const templateStringContent =
-          await ApiManager.sendTextRequestAsync(resolvedUrl, {}, false);
+        await ApiManager.sendTextRequestAsync(resolvedUrl, {}, false);
       return templateStringContent;
     } else {
       const templateFileManager = FileManagerFactory.getInstanceForType(fileId.source);

@@ -13,10 +13,11 @@
  */
 
 import { DatalabFileId } from '../../modules/file-manager/datalab-file';
-import { FileManagerFactory, FileManagerType }
+import { FileManagerFactory }
   from '../../modules/file-manager-factory/file-manager-factory';
 import { ItemListElement, ColumnTypeName, ItemListRow } from '../item-list/item-list';
 import {SessionManager, Session } from '../../modules/session-manager/session-manager';
+import { FileManagerType } from '../../modules/file-manager-factory/file-manager-type';
 
 interface SessionDescription {
   icon: string;
@@ -127,7 +128,7 @@ class SessionsElement extends Polymer.Element implements DatalabPageElement {
         // since the V1 Jupyter notebook editor does not pass a full file id.
         return this._sessionToDescriptionPromise(session, FileManagerType.JUPYTER);
       }
-      const type = FileManagerFactory.fileManagerNameToType(id.source);
+      const type = id.source as FileManagerType;
       const config = FileManagerFactory.getFileManagerConfig(type);
       const fileManager = FileManagerFactory.getInstanceForType(type);
       return fileManager.get(id)

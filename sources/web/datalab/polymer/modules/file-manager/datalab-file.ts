@@ -1,5 +1,5 @@
-import { FileManagerType, FileManagerFactory } from "../file-manager-factory/file-manager-factory";
 import { ColumnType } from "../../components/item-list/item-list";
+import { FileManagerType } from "../file-manager-factory/file-manager-type";
 
 /**
  * Represents a cell in a notebook.
@@ -39,13 +39,11 @@ export class DatalabFileId {
       tokens.push('');
     }
     const source = tokens.shift() as string;
-    return new DatalabFileId(tokens.join(this._delim),
-      FileManagerFactory.fileManagerNameToType(source));
+    return new DatalabFileId(tokens.join(this._delim), source as FileManagerType);
   }
 
   public toString() {
-    return FileManagerFactory.fileManagerTypetoString(this.source) +
-      DatalabFileId._delim + this.path;
+    return this.source.toString() + DatalabFileId._delim + this.path;
   }
 }
 

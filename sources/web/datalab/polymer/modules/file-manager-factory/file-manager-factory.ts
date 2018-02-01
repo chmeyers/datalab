@@ -18,17 +18,7 @@ import { DriveFileManager, SharedDriveFileManager } from '../drive-file-manager/
 import { GithubFileManager } from '../github-file-manager/github-file-manager';
 import { JupyterFileManager } from '../jupyter-file-manager/jupyter-file-manager';
 import { FileManager } from '../file-manager/file-manager';
-
-export enum FileManagerType {
-  BIG_QUERY = 'bigquery',
-  BIG_QUERY_PUBLIC = 'bigqueryPublic',
-  DRIVE = 'drive',
-  GITHUB = 'github',
-  JUPYTER = 'jupyter',
-  MOCK = 'mock',
-  SHARED_DRIVE = 'sharedDrive',
-  STATIC = 'static',  // For internal use, there is no corresponding FileManager
-}
+import { FileManagerType } from './file-manager-type';
 
 interface FileManagerConfig {
   typeClass: new () => FileManager;
@@ -103,23 +93,6 @@ export class FileManagerFactory {
   /** Get the default FileManager. */
   public static getInstance() {
     return FileManagerFactory.getInstanceForType(FileManagerType.JUPYTER);
-  }
-
-  public static fileManagerNameToType(name: string): FileManagerType {
-    switch (name) {
-      case 'bigquery': return FileManagerType.BIG_QUERY;
-      case 'bigqueryPublic': return FileManagerType.BIG_QUERY_PUBLIC;
-      case 'drive': return FileManagerType.DRIVE;
-      case 'github': return FileManagerType.GITHUB;
-      case 'jupyter': return FileManagerType.JUPYTER;
-      case 'sharedDrive': return FileManagerType.SHARED_DRIVE;
-      case 'static': return FileManagerType.STATIC;
-      default: throw new Error('Unknown FileManagerType name ' + name);
-    }
-  }
-
-  public static fileManagerTypetoString(type: FileManagerType) {
-    return type.toString();
   }
 
   public static getInstanceForType(fileManagerType: FileManagerType) {

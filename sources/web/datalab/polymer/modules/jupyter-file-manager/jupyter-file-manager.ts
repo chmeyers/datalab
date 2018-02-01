@@ -20,7 +20,7 @@
 
 import { DatalabFile, DatalabFileType, DatalabFileId }
   from '../file-manager/datalab-file';
-import { FileManagerType } from '../file-manager-factory/file-manager-factory';
+import { FileManagerType } from '../file-manager-factory/file-manager-type';
 import { Utils } from '../utils/utils';
 import { ApiManager, XhrOptions, ServiceId } from '../api-manager/api-manager';
 import { Column, ColumnTypeName } from '../../components/item-list/item-list';

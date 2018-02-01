@@ -1,5 +1,5 @@
 import { DatalabFile, DatalabFileId, DatalabFileType } from "../../modules/file-manager/datalab-file";
-import { FileManagerType, FileManagerFactory } from "../../modules/file-manager-factory/file-manager-factory";
+import { FileManagerFactory } from "../../modules/file-manager-factory/file-manager-factory";
 import { Utils } from "../../modules/utils/utils";
 import { ItemListElement, InlineDetailsDisplayMode, ItemListRow } from "../item-list/item-list";
 import { BaseDialogOptions, BaseDialogCloseResult, BaseDialogElement } from "../base-dialog/base-dialog";
@@ -11,6 +11,7 @@ import { DirectoryPickerDialogOptions, DirectoryPickerDialogCloseResult, Directo
 import { SettingsManager } from "../../modules/settings-manager/settings-manager";
 import { InlineDetailsPaneElement } from "../inline-details-pane/inline-details-pane";
 import { FileManager } from "../../modules/file-manager/file-manager";
+import { FileManagerType } from "../../modules/file-manager-factory/file-manager-type";
 
 /*
  * Copyright 2017 Google Inc. All rights reserved.
@@ -252,7 +253,7 @@ export default class FileBrowserElement extends Polymer.Element implements Datal
 
     const fileId = this._getFileIdFromProperty();
     if (fileId) {
-      this.fileManagerType = FileManagerFactory.fileManagerTypetoString(fileId.source);
+      this.fileManagerType = fileId.source.toString();
     }
 
     if (!this.fileManagerType) {
@@ -281,7 +282,7 @@ export default class FileBrowserElement extends Polymer.Element implements Datal
     }
 
     this._fileManager = FileManagerFactory.getInstanceForType(
-        FileManagerFactory.fileManagerNameToType(this.fileManagerType));
+        this.fileManagerType as FileManagerType);
 
     this._fetching = true;
     try {
@@ -350,12 +351,11 @@ export default class FileBrowserElement extends Polymer.Element implements Datal
     if (!fileId) {
       return;
     }
-    const newFileManagerType =
-        FileManagerFactory.fileManagerTypetoString(fileId.source);
+    const newFileManagerType = fileId.source.toString();
     if (newFileManagerType !== this.fileManagerType) {
       this.fileManagerType = newFileManagerType;
       this._fileManager = FileManagerFactory.getInstanceForType(
-          FileManagerFactory.fileManagerNameToType(this.fileManagerType));
+          this.fileManagerType as FileManagerType);
     }
     this._loadStartupPath(fileId);
   }
@@ -366,7 +366,7 @@ export default class FileBrowserElement extends Polymer.Element implements Datal
       // Fall back to Jupyter if settings are somehow outdated.
       const types = settings.supportedFileBrowserSources || ['jupyter'];
       this.fileManagerTypeList = types.map((source) =>
-          FileManagerFactory.fileManagerNameToType(source));
+          source as FileManagerType);
     }
 
     const menu = this.$.fileSourcesDropdown as HTMLDivElement;
@@ -375,7 +375,7 @@ export default class FileBrowserElement extends Polymer.Element implements Datal
 
     this.fileManagerTypeList.forEach((type) => {
       const config = FileManagerFactory.getFileManagerConfig(type);
-      const strType = FileManagerFactory.fileManagerTypetoString(type);
+      const strType = type.toString();
       const btn = document.createElement('paper-button');
       btn.classList.add('toolbar-button');
       btn.addEventListener('click', () => {
@@ -1173,7 +1173,7 @@ export default class FileBrowserElement extends Polymer.Element implements Datal
       }
     }
 
-    const type = FileManagerFactory.fileManagerNameToType(this.fileManagerType);
+    const type = this.fileManagerType as FileManagerType;
     const config = FileManagerFactory.getFileManagerConfig(type);
 
     // Always add the root file to the beginning.

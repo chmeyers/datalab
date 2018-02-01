@@ -15,7 +15,7 @@
 import {BigQueryFile} from '../modules/bigquery-file-manager/bigquery-file-manager';
 import {GapiManager} from '../modules/gapi-manager/gapi-manager';
 import {DatalabFileId, DatalabFileType} from '../modules/file-manager/datalab-file';
-import {FileManagerType} from '../modules/file-manager-factory/file-manager-factory';
+import {FileManagerType} from '../modules/file-manager-factory/file-manager-type';
 import TableInlineDetailsElement from '../components/table-inline-details/table-inline-details';
 import { fixture } from './test-utils';
 

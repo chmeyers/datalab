@@ -23,7 +23,7 @@
 
 import { DatalabFile, DatalabFileId, DatalabFileType }
   from '../modules/file-manager/datalab-file';
-import { FileManagerType } from '../modules/file-manager-factory/file-manager-factory';
+import { FileManagerType } from '../modules/file-manager-factory/file-manager-type';
 import { Utils } from '../modules/utils/utils';
 import { BaseDialogElement } from '../components/base-dialog/base-dialog';
 import { ColumnTypeName } from '../components/item-list/item-list';

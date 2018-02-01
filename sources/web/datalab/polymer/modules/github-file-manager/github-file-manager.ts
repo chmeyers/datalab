@@ -19,7 +19,7 @@
 
 import {DatalabFile, DatalabFileId, DatalabFileType}
     from '../file-manager/datalab-file';
-import {FileManagerType} from '../file-manager-factory/file-manager-factory';
+import {FileManagerType} from '../file-manager-factory/file-manager-type';
 import {Utils, UnsupportedMethod} from '../utils/utils';
 import { XhrOptions, ApiManager } from '../api-manager/api-manager';
 import { BaseFileManager } from '../file-manager/file-manager';

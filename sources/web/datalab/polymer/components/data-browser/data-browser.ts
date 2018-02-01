@@ -1,4 +1,4 @@
-import { FileManagerType } from "../../modules/file-manager-factory/file-manager-factory";
+import { FileManagerType } from "../../modules/file-manager-factory/file-manager-type";
 
 /*
  * Copyright 2017 Google Inc. All rights reserved.

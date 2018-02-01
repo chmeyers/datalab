@@ -7,6 +7,7 @@ import { ProjectPickerDialogElement, ProjectPickerDialogCloseResult } from "./co
 import { DriveFileManager } from "./modules/drive-file-manager/drive-file-manager";
 import { GapiManager } from "./modules/gapi-manager/gapi-manager";
 import { TemplateManager } from "./modules/template-manager/template-manager";
+import { FileManagerType } from "./modules/file-manager-factory/file-manager-type";
 
 /*
  * Copyright 2017 Google Inc. All rights reserved.
@@ -195,7 +196,7 @@ async function createNew(parentPath: string) {
     const fileName = queryParams.get('fileName') as string;
     const kernel = queryParams.get('kernel') as string;
     const fileManager = FileManagerFactory.getInstanceForType(
-      FileManagerFactory.fileManagerNameToType(parentId.source));
+        parentId.source as FileManagerType);
     const newFile = await fileManager.create(DatalabFileType.NOTEBOOK, parentId, fileName);
 
     if (fileManager instanceof DriveFileManager) {
