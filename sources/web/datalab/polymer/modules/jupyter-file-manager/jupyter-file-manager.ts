@@ -18,13 +18,14 @@
  * these APIs to help with type checking.
  */
 
-import { DatalabFile, DatalabFileType, BaseFileManager, DatalabFileId }
-  from '../file-manager/file-manager';
+import { DatalabFile, DatalabFileType, DatalabFileId }
+  from '../file-manager/datalab-file';
 import { FileManagerType } from '../file-manager-factory/file-manager-factory';
 import { Utils } from '../utils/utils';
 import { ApiManager, XhrOptions, ServiceId } from '../api-manager/api-manager';
 import { Column, ColumnTypeName } from '../../components/item-list/item-list';
 import { SettingsManager } from '../settings-manager/settings-manager';
+import { BaseFileManager } from '../file-manager/file-manager';
 
 export class JupyterFile extends DatalabFile {
   created?: string;
@@ -122,7 +123,8 @@ export class JupyterFileManager extends BaseFileManager {
       new DatalabFileId(file.path, FileManagerType.JUPYTER),
       file.name,
       fileType,
-      Utils.getItemIconString(fileType),
+      fileType === DatalabFileType.DIRECTORY ? Utils.constants.iconString.directory :
+                                               Utils.constants.iconString.file,
     );
     jupyterFile.created = file.created;
     jupyterFile.format = file.format;

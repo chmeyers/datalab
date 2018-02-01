@@ -12,7 +12,7 @@
  * the License.
  */
 
-import {DatalabFileId, NotebookContent, NotebookCell} from '../file-manager/file-manager';
+import {DatalabFileId, NotebookContent, NotebookCell} from '../file-manager/datalab-file';
 import {FileManagerType, FileManagerFactory} from '../file-manager-factory/file-manager-factory';
 import {Utils} from '../utils/utils';
 import { ApiManager } from '../api-manager/api-manager';

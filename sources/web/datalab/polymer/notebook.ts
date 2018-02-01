@@ -1,5 +1,5 @@
 import { ApiManager } from "./modules/api-manager/api-manager";
-import { DatalabFileId, DatalabFileType } from "./modules/file-manager/file-manager";
+import { DatalabFileId, DatalabFileType } from "./modules/file-manager/datalab-file";
 import { FileManagerFactory } from "./modules/file-manager-factory/file-manager-factory";
 import { BaseDialogOptions } from "./components/base-dialog/base-dialog";
 import { Utils } from "./modules/utils/utils";

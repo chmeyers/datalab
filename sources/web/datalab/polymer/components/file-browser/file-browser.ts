@@ -1,4 +1,4 @@
-import { DatalabFile, FileManager, DatalabFileId, DatalabFileType } from "../../modules/file-manager/file-manager";
+import { DatalabFile, DatalabFileId, DatalabFileType } from "../../modules/file-manager/datalab-file";
 import { FileManagerType, FileManagerFactory } from "../../modules/file-manager-factory/file-manager-factory";
 import { Utils } from "../../modules/utils/utils";
 import { ItemListElement, InlineDetailsDisplayMode, ItemListRow } from "../item-list/item-list";
@@ -10,6 +10,7 @@ import { DeleteDialogOptions, DeleteDialogElement } from "../delete-dialog/delet
 import { DirectoryPickerDialogOptions, DirectoryPickerDialogCloseResult, DirectoryPickerDialogElement } from "../directory-picker-dialog/directory-picker-dialog";
 import { SettingsManager } from "../../modules/settings-manager/settings-manager";
 import { InlineDetailsPaneElement } from "../inline-details-pane/inline-details-pane";
+import { FileManager } from "../../modules/file-manager/file-manager";
 
 /*
  * Copyright 2017 Google Inc. All rights reserved.
@@ -750,6 +751,19 @@ export default class FileBrowserElement extends Polymer.Element implements Datal
     }
   }
 
+  _getFileTypeString(type: DatalabFileType) {
+    switch (type) {
+      case DatalabFileType.DIRECTORY:
+        return Utils.constants.directory;
+      case DatalabFileType.FILE:
+        return Utils.constants.file;
+      case DatalabFileType.NOTEBOOK:
+        return Utils.constants.notebook;
+      default:
+        throw new Error('Unknown file type: ' + type);
+    }
+  }
+
   /**
    * The Jupyter contents API does not provide a way to create a new item with a specific
    * name, it only creates new untitled files or directories in provided path (see
@@ -766,7 +780,7 @@ export default class FileBrowserElement extends Polymer.Element implements Datal
     const inputOptions: InputDialogOptions = {
       inputLabel: 'Name',
       okLabel: 'Create',
-      title: 'New ' + Utils.getFileTypeString(itemType),
+      title: 'New ' + this._getFileTypeString(itemType),
     };
 
     const dialogElem = itemType === DatalabFileType.NOTEBOOK ?

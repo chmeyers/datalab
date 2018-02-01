@@ -12,7 +12,7 @@
  * the License.
  */
 
-import { DatalabFileId } from '../../modules/file-manager/file-manager';
+import { DatalabFileId } from '../../modules/file-manager/datalab-file';
 import { FileManagerFactory, FileManagerType }
   from '../../modules/file-manager-factory/file-manager-factory';
 import { ItemListElement, ColumnTypeName, ItemListRow } from '../item-list/item-list';

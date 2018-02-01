@@ -21,12 +21,13 @@
 /// <reference path="../node_modules/@types/chai/index.d.ts" />
 /// <reference path="../node_modules/@types/sinon/index.d.ts" />
 
-import { DatalabFile, DatalabFileId, DatalabFileType, BaseFileManager }
-  from '../modules/file-manager/file-manager';
+import { DatalabFile, DatalabFileId, DatalabFileType }
+  from '../modules/file-manager/datalab-file';
 import { FileManagerType } from '../modules/file-manager-factory/file-manager-factory';
 import { Utils } from '../modules/utils/utils';
 import { BaseDialogElement } from '../components/base-dialog/base-dialog';
 import { ColumnTypeName } from '../components/item-list/item-list';
+import { BaseFileManager } from '../modules/file-manager/file-manager';
 
 export declare function fixture(element: string): any;
 

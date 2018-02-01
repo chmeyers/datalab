@@ -12,13 +12,14 @@
  * the License.
  */
 
-import { DatalabFile, DatalabFileType, BaseFileManager, DatalabFileId }
-  from '../file-manager/file-manager';
+import { DatalabFile, DatalabFileType, DatalabFileId }
+  from '../file-manager/datalab-file';
 import { FileManagerType } from '../file-manager-factory/file-manager-factory';
 import { Utils, UnsupportedMethod } from '../../modules/utils/utils';
 import { GapiManager } from '../gapi-manager/gapi-manager';
 import { HttpResponse } from '../../test/test-utils';
 import { ColumnTypeName, Column } from '../../components/item-list/item-list';
+import { BaseFileManager } from '../file-manager/file-manager';
 
 type ListDatasetsResponse = gapi.client.bigquery.ListDatasetsResponse;
 type ListTablesResponse = gapi.client.bigquery.ListTablesResponse;

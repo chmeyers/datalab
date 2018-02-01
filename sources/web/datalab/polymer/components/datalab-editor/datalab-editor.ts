@@ -12,18 +12,20 @@
  * the License.
  */
 
-import {DatalabFileId, DatalabFile, DatalabFileType}
-    from '../../modules/file-manager/file-manager';
-import {FileManager} from '../../modules/file-manager/file-manager';
-import {FileManagerFactory, FileManagerType}
-    from '../../modules/file-manager-factory/file-manager-factory';
-import {DirectoryPickerDialogElement, DirectoryPickerDialogOptions,
-        DirectoryPickerDialogCloseResult}
-    from '../directory-picker-dialog/directory-picker-dialog';
-import {InputDialogCloseResult, InputDialogElement, InputDialogOptions}
-    from '../input-dialog/input-dialog';
+import { DatalabFileId, DatalabFile, DatalabFileType }
+  from '../../modules/file-manager/datalab-file';
+import { FileManager } from '../../modules/file-manager/file-manager';
+import { FileManagerFactory, FileManagerType }
+  from '../../modules/file-manager-factory/file-manager-factory';
+import {
+  DirectoryPickerDialogElement, DirectoryPickerDialogOptions,
+  DirectoryPickerDialogCloseResult
+}
+  from '../directory-picker-dialog/directory-picker-dialog';
+import { InputDialogCloseResult, InputDialogElement, InputDialogOptions }
+  from '../input-dialog/input-dialog';
 import * as CodeMirror from '../../node_modules/@types/codemirror/index';
-import {Utils} from '../../modules/utils/utils';
+import { Utils } from '../../modules/utils/utils';
 import { SettingsManager } from '../../modules/settings-manager/settings-manager';
 
 /**
@@ -155,7 +157,7 @@ export default class DatalabEditorElement extends Polymer.Element {
       // contents of the editor, and clicking it, then removing it from the DOM.
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute('href', 'data:text/plain;charset=utf-8,' +
-          encodeURIComponent(this._editor.getDoc().getValue()));
+        encodeURIComponent(this._editor.getDoc().getValue()));
       downloadAnchor.setAttribute('download', this._file.name);
       downloadAnchor.style.display = 'none';
       document.body.appendChild(downloadAnchor);
@@ -180,18 +182,18 @@ export default class DatalabEditorElement extends Polymer.Element {
         withFileName: true,
       };
       const closeResult = await Utils.showDialog(DirectoryPickerDialogElement, options) as
-          DirectoryPickerDialogCloseResult;
+        DirectoryPickerDialogCloseResult;
 
       if (closeResult.confirmed) {
         // TODO: Prevent the dialog from closing if the input field is empty
         if (closeResult.fileName) {
           try {
             this._file = await this._fileManager.create(DatalabFileType.FILE,
-                closeResult.selectedDirectory.id, closeResult.fileName);
+              closeResult.selectedDirectory.id, closeResult.fileName);
             this.fileId = this._file.id;
           } catch (e) {
             Utils.showErrorDialog('Error saving file', 'A file with the name ' +
-                closeResult.fileName + ' already exists in this directory.');
+              closeResult.fileName + ' already exists in this directory.');
             throw e;
           }
         }
@@ -235,7 +237,7 @@ export default class DatalabEditorElement extends Polymer.Element {
       };
 
       const closeResult =
-          await Utils.showDialog(InputDialogElement, options) as InputDialogCloseResult;
+        await Utils.showDialog(InputDialogElement, options) as InputDialogCloseResult;
 
       // TODO: Prevent the dialog from closing if the input field is empty
       if (closeResult.confirmed && closeResult.userInput) {

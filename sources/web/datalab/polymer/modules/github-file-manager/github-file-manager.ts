@@ -17,11 +17,12 @@
  * as documented at developer.github.com/v3.
  */
 
-import {DatalabFile, DatalabFileId, BaseFileManager, DatalabFileType}
-    from '../file-manager/file-manager';
+import {DatalabFile, DatalabFileId, DatalabFileType}
+    from '../file-manager/datalab-file';
 import {FileManagerType} from '../file-manager-factory/file-manager-factory';
 import {Utils, UnsupportedMethod} from '../utils/utils';
 import { XhrOptions, ApiManager } from '../api-manager/api-manager';
+import { BaseFileManager } from '../file-manager/file-manager';
 
 // TODO(jimmc): Need to deal with the following
 // paged results (default page size is 30, can request up to 100)
@@ -309,9 +310,14 @@ export class GithubFileManager extends BaseFileManager {
     .map((file) => this._ghDirEntryToDatalabFile(file));
   }
 
+  private _getItemIconString(type: DatalabFileType) {
+    return type === DatalabFileType.DIRECTORY ? Utils.constants.iconString.directory :
+                                                Utils.constants.iconString.file;
+  }
+
   private _ghRepoToDatalabFile(repo: GhRepoResponse): DatalabFile {
     const type = DatalabFileType.DIRECTORY;
-    const icon = Utils.getItemIconString(type);
+    const icon = this._getItemIconString(type);
     return new GithubFile(
       new DatalabFileId(repo.full_name, FileManagerType.GITHUB),
       repo.name,
@@ -325,7 +331,7 @@ export class GithubFileManager extends BaseFileManager {
         file.name.endsWith('.ipynb') ? DatalabFileType.NOTEBOOK :
         file.type === 'dir' ? DatalabFileType.DIRECTORY :
         DatalabFileType.FILE;
-    const icon = Utils.getItemIconString(type);
+    const icon = this._getItemIconString(type);
     const pathParts = file.url.split('/');
     const prefix = pathParts.slice(4, 6).join('/'); // user and project
     const path = prefix + '/' + file.path;
@@ -340,7 +346,7 @@ export class GithubFileManager extends BaseFileManager {
   private _ghFileToDatalabFile(file: GhFileResponse): DatalabFile {
     const type = file.type === 'dir' ?
         DatalabFileType.DIRECTORY : DatalabFileType.FILE;
-    const icon = Utils.getItemIconString(type);
+    const icon = this._getItemIconString(type);
     const pathParts = file.url.split('/');
     const prefix = pathParts.slice(4, 6).join('/'); // user and project
     const path = prefix + '/' + file.path;

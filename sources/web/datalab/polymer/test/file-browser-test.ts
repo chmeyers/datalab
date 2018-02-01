@@ -1,4 +1,4 @@
-import { DatalabFileId, DatalabFile, DatalabFileType } from "../modules/file-manager/file-manager";
+import { DatalabFileId, DatalabFile, DatalabFileType } from "../modules/file-manager/datalab-file";
 import { FileManagerType, FileManagerFactory } from "../modules/file-manager-factory/file-manager-factory";
 import { MockFileManager, MockFile, fixture, TestUtils } from "./test-utils";
 import { Utils } from "../modules/utils/utils";

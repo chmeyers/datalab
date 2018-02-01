@@ -14,7 +14,6 @@
 
 import {BaseDialogElement, BaseDialogOptions, BaseDialogCloseResult}
     from '../../components/base-dialog/base-dialog';
-import { DatalabFileType } from '../file-manager/file-manager';
 
 /**
  * Class provides helper methods for various operations.
@@ -50,6 +49,12 @@ export class Utils {
     newNotebookUrlComponent:  '/notebook/new/',
     notebook: 'notebook',
     notebookUrlComponent: '/notebook/',
+
+    // Icon strings
+    iconString: {
+      directory: 'folder',
+      file: 'editor:insert-drive-file',
+    },
 
     // Feature names
     // tslint:disable-next-line:object-literal-sort-keys
@@ -190,26 +195,6 @@ export class Utils {
   public static moveElementChildren(from: HTMLElement, to: HTMLElement) {
     while (from.firstChild) {
       to.appendChild(from.firstChild);
-    }
-  }
-
-  /**
-   * Given a string type for an item, return the name of the icon to use.
-   */
-  public static getItemIconString(type: DatalabFileType) {
-    return type === DatalabFileType.DIRECTORY ? 'folder' : 'editor:insert-drive-file';
-  }
-
-  public static getFileTypeString(type: DatalabFileType) {
-    switch (type) {
-      case DatalabFileType.DIRECTORY:
-        return this.constants.directory;
-      case DatalabFileType.FILE:
-        return this.constants.file;
-      case DatalabFileType.NOTEBOOK:
-        return this.constants.notebook;
-      default:
-        throw new Error('Unknown file type: ' + type);
     }
   }
 

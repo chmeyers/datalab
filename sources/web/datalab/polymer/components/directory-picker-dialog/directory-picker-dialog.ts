@@ -16,7 +16,7 @@
 
 import {BaseDialogElement, BaseDialogCloseResult, BaseDialogOptions}
     from '../base-dialog/base-dialog';
-import {DatalabFile, DatalabFileId} from '../../modules/file-manager/file-manager';
+import {DatalabFile, DatalabFileId} from '../../modules/file-manager/datalab-file';
 import {Utils} from '../../modules/utils/utils';
 import FileBrowserElement from '../file-browser/file-browser';
 

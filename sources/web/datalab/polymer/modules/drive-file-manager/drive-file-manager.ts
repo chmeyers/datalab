@@ -17,12 +17,13 @@
  * wrapped in the FileManager class.
  */
 
-import {DatalabFile, BaseFileManager, DatalabFileId, DatalabFileType, NotebookContent}
-    from '../file-manager/file-manager';
-import {FileManagerType} from '../file-manager-factory/file-manager-factory';
-import {GapiManager} from '../gapi-manager/gapi-manager';
-import {Utils} from '../utils/utils';
+import { DatalabFile, DatalabFileId, DatalabFileType, NotebookContent }
+  from '../file-manager/datalab-file';
+import { FileManagerType } from '../file-manager-factory/file-manager-factory';
+import { GapiManager } from '../gapi-manager/gapi-manager';
+import { Utils } from '../utils/utils';
 import { Column, ColumnTypeName } from '../../components/item-list/item-list';
+import { BaseFileManager } from '../file-manager/file-manager';
 
 class DriveFile extends DatalabFile {
   lastModified?: Date;
@@ -94,19 +95,19 @@ export class DriveFileManager extends BaseFileManager {
 
   public getColumns(): Column[] {
     return [{
-        name: Utils.constants.columns.name,
-        type: ColumnTypeName.STRING,
-      }, {
-        name: Utils.constants.columns.lastModified,
-        type: ColumnTypeName.DATE,
-      }, {
-        name: Utils.constants.columns.owner,
-        type: ColumnTypeName.STRING,
-      }];
+      name: Utils.constants.columns.name,
+      type: ColumnTypeName.STRING,
+    }, {
+      name: Utils.constants.columns.lastModified,
+      type: ColumnTypeName.DATE,
+    }, {
+      name: Utils.constants.columns.owner,
+      type: ColumnTypeName.STRING,
+    }];
   }
 
   public async create(fileType: DatalabFileType, containerId?: DatalabFileId, name?: string)
-      : Promise<DatalabFile> {
+    : Promise<DatalabFile> {
     let mimeType: string;
     switch (fileType) {
       case DatalabFileType.DIRECTORY:
@@ -117,16 +118,16 @@ export class DriveFileManager extends BaseFileManager {
         mimeType = 'text/plain';
     }
     const content = fileType === DatalabFileType.NOTEBOOK ?
-        NotebookContent.EMPTY_NOTEBOOK_CONTENT : '';
+      NotebookContent.EMPTY_NOTEBOOK_CONTENT : '';
     const upstreamFile = await GapiManager.drive.create(mimeType,
-                                                        containerId ? containerId.path : 'root',
-                                                        name || 'New Item',
-                                                        content);
+      containerId ? containerId.path : 'root',
+      name || 'New Item',
+      content);
     return this._fromUpstreamFile(upstreamFile);
   }
 
   public rename(oldFileId: DatalabFileId, newName: string, newContainerId?: DatalabFileId)
-      : Promise<DatalabFile> {
+    : Promise<DatalabFile> {
     const newContainerPath = newContainerId ? newContainerId.path : undefined;
     return GapiManager.drive.renameFile(oldFileId.path, newName, newContainerPath)
       .then((upstreamFile) => this._fromUpstreamFile(upstreamFile));
@@ -167,10 +168,10 @@ export class DriveFileManager extends BaseFileManager {
       new DatalabFileId(file.id, FileManagerType.DRIVE),
       file.name,
       file.mimeType === DriveFileManager._directoryMimeType ?
-                              DatalabFileType.DIRECTORY :
-                              DatalabFileType.FILE,
+        DatalabFileType.DIRECTORY :
+        DatalabFileType.FILE,
       file.mimeType === DriveFileManager._directoryMimeType ?
-                              file.iconLink : 'editor:insert-drive-file',
+        file.iconLink : 'editor:insert-drive-file',
     );
     if (driveFile.type === DatalabFileType.FILE && driveFile.name.endsWith('.ipynb')) {
       driveFile.type = DatalabFileType.NOTEBOOK;

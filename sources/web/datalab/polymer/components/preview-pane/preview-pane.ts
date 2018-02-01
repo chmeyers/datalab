@@ -1,4 +1,4 @@
-import { DatalabFile } from "../../modules/file-manager/file-manager";
+import { DatalabFile } from "../../modules/file-manager/datalab-file";
 
 /*
  * Copyright 2017 Google Inc. All rights reserved.

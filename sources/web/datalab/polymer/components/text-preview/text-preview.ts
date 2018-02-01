@@ -1,4 +1,4 @@
-import { DatalabFile } from "../../modules/file-manager/file-manager";
+import { DatalabFile } from "../../modules/file-manager/datalab-file";
 import { FileManagerFactory } from "../../modules/file-manager-factory/file-manager-factory";
 import { Utils } from "../../modules/utils/utils";
 

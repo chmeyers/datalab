@@ -12,7 +12,7 @@
  * the License.
  */
 
-import {DatalabFileType} from '../modules/file-manager/file-manager';
+import {DatalabFileType} from '../modules/file-manager/datalab-file';
 import {FileManagerFactory} from '../modules/file-manager-factory/file-manager-factory';
 import { MockFileManager, fixture, MockFile, TestUtils } from './test-utils';
 import NotebookPreviewElement from '../components/notebook-preview/notebook-preview';

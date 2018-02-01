@@ -1,5 +1,5 @@
 import DatalabEditorElement from "./components/datalab-editor/datalab-editor";
-import { DatalabFileId } from "./modules/file-manager/file-manager";
+import { DatalabFileId } from "./modules/file-manager/datalab-file";
 import { Utils } from "./modules/utils/utils";
 
 /*
